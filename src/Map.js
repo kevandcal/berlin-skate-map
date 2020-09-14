@@ -6,6 +6,8 @@ import skatespots from './skatespots';
 export function Map() {
   const [selectedSpot, setSelectedSpot] = useState(null);
   const [largerImage, setLargerImage] = useState(null);
+  const [viewportWidth, setViewportWidth] = useState(null);
+
 
   return (
     <GoogleMap
@@ -47,20 +49,18 @@ export function Map() {
           <div id="info-window" className={largerImage}>
             <div id="info-window-name">{selectedSpot.name}</div>
             {selectedSpot.img !== "" && (
-              <div
+              <img
                 id="info-window-img"
-                onClick={
-                  largerImage === null
-                    ? () => setLargerImage("larger")
-                    : () => setLargerImage(null)
-                }
-              >
-                <img
-                  src={"img/skate-spots/" + selectedSpot.img}
-                  className={largerImage}
-                  alt="skate spot"
-                />
-              </div>
+                onClick={() => {
+                  setViewportWidth(window.innerWidth);
+                  largerImage === null && viewportWidth <= 1800
+                    ? setLargerImage("larger")
+                    : setLargerImage(null)
+                }}
+                src={"img/skate-spots/" + selectedSpot.img}
+                className={largerImage}
+                alt="skate spot"
+              />
             )}
             <div id="info-window-description">
               {selectedSpot.description}
