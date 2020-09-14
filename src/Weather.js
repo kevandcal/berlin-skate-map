@@ -11,7 +11,7 @@ export function Weather() {
   useEffect(() => {
     axios
       .get(
-        "http://api.openweathermap.org/data/2.5/weather?id=2950159&APPID=" +
+        "https://api.openweathermap.org/data/2.5/weather?id=2950159&APPID=" +
         OPEN_WEATHER_MAP_KEY +
         "&units=metric"
       )
