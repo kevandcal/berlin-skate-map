@@ -138,6 +138,7 @@ header #skateboard {
   margin-bottom: 2vh;
   font-size: 1.3vw;
   font-style: italic;
+  text-align: center;
   color: lightgrey;
 }
 
@@ -153,7 +154,24 @@ header #skateboard {
 #info-window-directions:hover {
   color: black;
   background-color: white;
-  font-size: 1.5vw;
   cursor: pointer;
   box-shadow: 0 0 0.5vw black;
+}
+
+@media (max-width: 700px) {
+  #info-window-name {
+    font-size: 14px;
+  }
+  #info-window-description {
+    font-size: 10px;
+  }
+  #info-window-address {
+    font-size: 10px;
+  }
+  #info-window-directions {
+    font-size: 10px;
+  }
+  #info-window-directions:hover {
+    box-shadow: 0 0 1vw black;;
+  }
 }
