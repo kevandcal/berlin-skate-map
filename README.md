@@ -4,7 +4,7 @@ This React project, built exclusively using Hooks, features skateboarding spots 
 
 ## Demo (click to be redirected to the site)
 
-[![Berlin Skate Map](public/img/berlin-skate-map-demo.gif)](http://berlinskatemap.herokuapp.com/)
+[![Berlin Skate Map](public/img/berlinskatemap-demo.gif)](http://berlinskatemap.herokuapp.com/)
 
 ## url
 
