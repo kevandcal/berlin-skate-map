@@ -1,68 +1,31 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Berlin Skate Map
 
-## Available Scripts
+This React project, built exclusively using Hooks, features skateboarding spots in Berlin plotted on a custom-styled Google Map and displays current weather and daylight conditions.
 
-In the project directory, you can run:
+## Demo (click to be redirected to the site)
 
-### `npm start`
+[![Berlin Skate Map](public/img/berlin-skate-map-demo.gif)](http://berlinskatemap.herokuapp.com/)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## url
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+http://berlinskatemap.herokuapp.com/
 
-### `npm test`
+## Built with
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+HTML, CSS, React (Hooks), Node.js, Open Weather Map API, Google Maps API, react-google-maps (package), PostgreSQL
 
-### `npm run build`
+## Features
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-   A custom-styled Google Map is embedded on the page, centered on Berlin with skate spots plotted on it using markers
+-   Clicking any marker initializes a pop-up window with the name, a description, a photo/gif if one is in the database, and the address of the skate spot, as well as a `directions` button that opens Google Maps in a new tab with the destination pre-filled in
+-   Clicking on the photo/gif causes it to grow in size, reformatting the pop-up window in the process; clicking it again makes it return to its original size
+-   Clicking on the `x` in the pop-up window or anywhere outside of the pop-up window closes it
+-   Because weather and daylight conditions are also important factors for skateboarding, relevant data are pulled from the Open Weather Map API when React mounts
+-   A general weather icon and the current temperature are always rendered, and additional information is conditionally rendered:
+-   If it is raining or snowing, the precipitation's forecasted end is displayed
+-   If it is not raining or snowing, it is displayed whether/when precipitation is forecasted in the following 12 h
+-   If a user loads the page during daytime, a timer counting down remaining daylight is rendered
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Future
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+-   Adding more skate spots to the database
