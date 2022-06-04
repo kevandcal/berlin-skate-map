@@ -1,6 +1,6 @@
 # Berlin Skate Map
 
-This React project, built exclusively using Hooks, features skateboarding spots in Berlin plotted on a custom-styled Google Map and displays current weather and daylight conditions.
+This React project features skateboarding spots in Berlin plotted on a custom-styled Google Map and displays current weather and daylight conditions.
 
 ## Demo
 
@@ -12,7 +12,7 @@ http://berlinskatemap.herokuapp.com/
 
 ## Built with
 
-React, CSS, Node.js, PostgreSQL, Open Weather Map API, Google Maps API, react-google-maps (library)
+React, CSS, Open Weather Map API, Google Maps API, react-google-maps (library)
 
 ## Features
 

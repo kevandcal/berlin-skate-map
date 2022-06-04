@@ -6,7 +6,7 @@ export function Header() {
     <header>
       <div id="berlin-letters">
         BERLIN <span id="skate-letters">SKATE</span> MAP
-            </div>
+      </div>
       <Weather />
     </header>
   );
