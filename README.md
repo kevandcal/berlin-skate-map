@@ -2,17 +2,17 @@
 
 This React project, built exclusively using Hooks, features skateboarding spots in Berlin plotted on a custom-styled Google Map and displays current weather and daylight conditions.
 
-## Demo (click to be redirected to the site)
+## Demo
 
-[![Berlin Skate Map](public/img/berlinskatemap-demo.gif)](http://berlinskatemap.herokuapp.com/)
+![Berlin Skate Map](public/img/berlinskatemap-demo.gif)
 
-## url
+## URL
 
 http://berlinskatemap.herokuapp.com/
 
 ## Built with
 
-HTML, CSS, React (Hooks), Node.js, Open Weather Map API, Google Maps API, react-google-maps (package), PostgreSQL
+React, CSS, Node.js, PostgreSQL, Open Weather Map API, Google Maps API, react-google-maps (library)
 
 ## Features
 
@@ -25,7 +25,3 @@ HTML, CSS, React (Hooks), Node.js, Open Weather Map API, Google Maps API, react-
 -   If it is raining or snowing, the precipitation's forecasted end is displayed
 -   If it is not raining or snowing, it is displayed whether/when precipitation is forecasted in the following 12 h
 -   If a user loads the page during daytime, a timer counting down remaining daylight is rendered
-
-## Future
-
--   Adding more skate spots to the database
