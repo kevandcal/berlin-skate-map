@@ -5,16 +5,32 @@ const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 export function Weather() {
   const [weatherNow, setWeatherNow] = useState();
   const [weatherForecast, setWeatherForecast] = useState();
-  const [timeNow, setTimeNow] = useState(new Date().getTime());
   const [daylightNow, setDaylightNow] = useState(false);
+  const [daylightRemaining, setDaylightRemaining] = useState(0);
 
-  useEffect(() => {
-    axios
-      .get(
-        "https://api.openweathermap.org/data/2.5/weather?id=2950159&APPID=" +
-        OPEN_WEATHER_MAP_KEY +
-        "&units=metric"
-      )
+  const handleDaylight = (sunriseTime, sunsetTime) => {
+    const now = new Date().getTime();
+    const sunIsUp = sunriseTime < now && now < sunsetTime;
+    setDaylightNow(sunIsUp);
+    if (sunIsUp) {
+      const secondsLeft = Math.floor((sunsetTime - now) / 1000);
+      // const hours = Math.floor((secondsLeft % (60 * 60 * 24)) / (60 * 60));
+      // const minutes = Math.floor((secondsLeft % (60 * 60)) / 60);
+      // const seconds = Math.floor(secondsLeft % 60);
+      const hours = Math.floor(secondsLeft / (60 * 60));
+      const minutes = Math.floor((secondsLeft - (hours * 60 * 60)) / 60);
+      const seconds = Math.floor(secondsLeft - (hours * 60 * 60) - (minutes * 60));
+      const addZero = timeUnitVar => `${timeUnitVar < 10 ? '0' : ''}${timeUnitVar}`;
+      const formattedTime = `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
+      setDaylightRemaining(formattedTime);
+    }
+  };
+
+  const weatherApiEndpoint = path => `https://api.openweathermap.org/data/2.5/${path}?id=2950159&APPID=${OPEN_WEATHER_MAP_KEY}&units=metric`;
+
+  const fetchAndHandleCurrentWeather = () => {
+    const endpoint = weatherApiEndpoint('weather');
+    axios.get(endpoint)
       .then(({ data }) => {
         setWeatherNow({
           currentTemp: data.main.temp,
@@ -25,18 +41,17 @@ export function Weather() {
           sunrise: data.sys.sunrise
         });
         setInterval(() => {
-          daylightRemaining(data.sys.sunset, data.sys.sunrise);
+          handleDaylight(data.sys.sunrise * 1000, data.sys.sunset * 1000);
         }, 1000);
       })
       .catch(err => {
         console.log("GET api.openweathermap WEATHER catch err: ", err);
       });
-    axios
-      .get(
-        "https://api.openweathermap.org/data/2.5/forecast?id=2950159&APPID=" +
-        OPEN_WEATHER_MAP_KEY +
-        "&units=metric"
-      )
+  };
+
+  const fetchAndHandleWeatherForecast = () => {
+    const endpoint = weatherApiEndpoint('forecast');
+    axios.get(endpoint)
       .then(({ data }) => {
         setWeatherForecast({
           rainInThreeHours: data.list[0].rain,
@@ -48,32 +63,10 @@ export function Weather() {
       .catch(err => {
         console.log("GET api.openweathermap FORECAST catch err: ", err);
       });
-  }, []);
-
-  const daylightRemaining = (sunset, sunrise) => {
-    let sunsetTime = sunset * 1000;
-    let sunriseTime = sunrise * 1000;
-    let now = new Date().getTime();
-    let t = sunsetTime - now;
-    let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    if (hours < 10) {
-      hours = "0" + hours;
-    }
-    let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-    if (minutes < 10) {
-      minutes = "0" + minutes;
-    }
-    let seconds = Math.floor((t % (1000 * 60)) / 1000);
-    if (seconds < 10) {
-      seconds = "0" + seconds;
-    }
-    if (sunriseTime < now && now < sunsetTime) {
-      setDaylightNow(true);
-    } else {
-      setDaylightNow(false);
-    }
-    setTimeNow(`${hours}:${minutes}:${seconds}`);
   };
+
+  useEffect(fetchAndHandleCurrentWeather, []);
+  useEffect(fetchAndHandleWeatherForecast, []);
 
   function currentIcon(arg) {
     return (
@@ -153,7 +146,7 @@ export function Weather() {
               {currentWindSpeed(weatherNow.currentWindSpeed)}
             </div>
           )}
-          {daylightNow && <div>Daylight remaining: {timeNow}</div>}
+          {daylightNow && <div>Daylight remaining: {daylightRemaining}</div>}
           <div>
             {willItRain &&
               willItRain(
