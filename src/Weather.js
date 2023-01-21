@@ -26,7 +26,7 @@ export function Weather() {
 
   const weatherApiEndpoint = path => `https://api.openweathermap.org/data/2.5/${path}?id=2950159&APPID=${OPEN_WEATHER_MAP_KEY}&units=metric`;
 
-  const fetchAndHandleCurrentWeather = () => {
+  const fetchAndSetWeatherNow = () => {
     const endpoint = weatherApiEndpoint('weather');
     axios.get(endpoint)
       .then(({ data }) => {
@@ -45,7 +45,7 @@ export function Weather() {
       });
   };
 
-  const fetchAndHandleWeatherForecast = () => {
+  const fetchAndSetWeatherForecast = () => {
     const endpoint = weatherApiEndpoint('forecast');
     axios.get(endpoint)
       .then(({ data }) => {
@@ -87,37 +87,38 @@ export function Weather() {
       if (!weatherForecast.rainInThreeHours || !weatherForecast.rainInSixHours) {
         precipDetails = `Rain expected to stop in next ${weatherForecast.rainInThreeHours ? '3' : '6'}h`;
       } else {
-        precipDetails = `Rain expected to continue for at least 6h`;
+        precipDetails = `Rain to continue for at least 6h`;
       }
     } else if (isSnowing) {
       if (!weatherForecast.snowInThreeHours || !weatherForecast.snowInSixHours) {
         precipDetails = `Snow expected to stop in next ${weatherForecast.snowInThreeHours ? '3' : '6'}h`;
       } else {
-        precipDetails = `Snow expected to continue for at least 6h`;
+        precipDetails = `Snow to continue for at least 6h`;
       }
     }
     setPrecipitationDetails(precipDetails);
   }
 
-  useEffect(fetchAndHandleCurrentWeather, []);
-  useEffect(fetchAndHandleWeatherForecast, []);
+  useEffect(fetchAndSetWeatherNow, []);
+  useEffect(fetchAndSetWeatherForecast, []);
   useEffect(handlePrecipitation, [weatherNow, weatherForecast]);
 
   return !weatherNow || !weatherForecast ? null : (
-    <div id="weather-component-container">
-      <div id="weather-component">
-        <img
-          src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
-          alt={weatherNow.description}
-          title={weatherNow.description}
-          id="weather-icon"
-        />
-        <div id="temperature">{weatherNow.temperature}&deg; C</div>
-        <br />
-        <div>Wind conditions: {windConditions}</div>
-        {daylightNow && <div>Daylight remaining: {daylightRemaining}</div>}
-        <div>{precipitationDetails}</div>
+    // <div id="weather-component-container">
+    <div id="weather-component">
+      <img
+        src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
+        alt={weatherNow.description}
+        title={weatherNow.description}
+        id="weather-icon"
+      />
+      <p id="temperature">{weatherNow.temperature}&deg; C</p>
+      <div id="weather-text">
+        <p>Wind conditions: {windConditions}</p>
+        {daylightNow && <p>Daylight remaining: {daylightRemaining}</p>}
+        <p>{precipitationDetails}</p>
       </div>
     </div>
+    // </div>
   );
 }
