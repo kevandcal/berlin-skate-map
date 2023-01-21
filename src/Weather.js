@@ -7,6 +7,7 @@ export function Weather() {
   const [weatherForecast, setWeatherForecast] = useState();
   const [daylightNow, setDaylightNow] = useState(false);
   const [daylightRemaining, setDaylightRemaining] = useState(0);
+  const [precipitationDetails, setPrecipitationDetails] = useState('');
 
   const handleDaylight = (sunriseTime, sunsetTime) => {
     const now = new Date().getTime();
@@ -14,13 +15,10 @@ export function Weather() {
     setDaylightNow(sunIsUp);
     if (sunIsUp) {
       const secondsLeft = Math.floor((sunsetTime - now) / 1000);
-      // const hours = Math.floor((secondsLeft % (60 * 60 * 24)) / (60 * 60));
-      // const minutes = Math.floor((secondsLeft % (60 * 60)) / 60);
-      // const seconds = Math.floor(secondsLeft % 60);
       const hours = Math.floor(secondsLeft / (60 * 60));
       const minutes = Math.floor((secondsLeft - (hours * 60 * 60)) / 60);
       const seconds = Math.floor(secondsLeft - (hours * 60 * 60) - (minutes * 60));
-      const addZero = timeUnitVar => `${timeUnitVar < 10 ? '0' : ''}${timeUnitVar}`;
+      const addZero = timeUnit => `${timeUnit < 10 ? '0' : ''}${timeUnit}`;
       const formattedTime = `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
       setDaylightRemaining(formattedTime);
     }
@@ -33,12 +31,10 @@ export function Weather() {
     axios.get(endpoint)
       .then(({ data }) => {
         setWeatherNow({
-          currentTemp: data.main.temp,
-          currentDescription: data.weather[0].description,
-          currentWindSpeed: data.wind.speed,
-          currentIcon: data.weather[0].icon,
-          sunset: data.sys.sunset,
-          sunrise: data.sys.sunrise
+          temperature: data.main.temp,
+          description: data.weather[0].description,
+          wind: data.wind.speed,
+          icon: data.weather[0].icon,
         });
         setInterval(() => {
           handleDaylight(data.sys.sunrise * 1000, data.sys.sunset * 1000);
@@ -55,9 +51,9 @@ export function Weather() {
       .then(({ data }) => {
         setWeatherForecast({
           rainInThreeHours: data.list[0].rain,
+          snowInThreeHours: data.list[0].snow,
           rainInSixHours: data.list[1].rain,
-          rainInNineHours: data.list[2].rain,
-          rainInTwelveHours: data.list[3].rain
+          snowInSixHours: data.list[1].snow
         });
       })
       .catch(err => {
@@ -65,100 +61,63 @@ export function Weather() {
       });
   };
 
+  const windConditions = !weatherNow ? '' :
+    weatherNow.wind <= 6 ? 'calm' :
+      weatherNow.wind <= 15 ? 'light breeze' :
+        weatherNow.wind <= 33 ? 'moderate breeze' :
+          weatherNow.wind <= 49 ? 'strong breeze' :
+            'strong wind';
+
+  const handlePrecipitation = () => {
+    if (!weatherNow || !weatherForecast) {
+      return;
+    }
+    let precipDetails = '';
+    const isRaining = weatherNow.icon.startsWith("09") || weatherNow.icon.startsWith("10");
+    const isSnowing = weatherNow.icon.startsWith('13');
+    if (!isRaining && !isSnowing) {
+      if (weatherForecast.rainInThreeHours || weatherForecast.snowInThreeHours) {
+        precipDetails = `${weatherForecast.rainInThreeHours ? 'Rain' : 'Snow'} expected in next 3h`;
+      } else if (weatherForecast.rainInSixHours || weatherForecast.snowInSixHours) {
+        precipDetails = `${weatherForecast.rainInSixHours ? 'Rain' : 'Snow'} expected in next 6h`;
+      } else {
+        precipDetails = 'No precipitation expected in next 6h'
+      }
+    } else if (isRaining) {
+      if (!weatherForecast.rainInThreeHours || !weatherForecast.rainInSixHours) {
+        precipDetails = `Rain expected to stop in next ${weatherForecast.rainInThreeHours ? '3' : '6'}h`;
+      } else {
+        precipDetails = `Rain expected to continue for at least 6h`;
+      }
+    } else if (isSnowing) {
+      if (!weatherForecast.snowInThreeHours || !weatherForecast.snowInSixHours) {
+        precipDetails = `Snow expected to stop in next ${weatherForecast.snowInThreeHours ? '3' : '6'}h`;
+      } else {
+        precipDetails = `Snow expected to continue for at least 6h`;
+      }
+    }
+    setPrecipitationDetails(precipDetails);
+  }
+
   useEffect(fetchAndHandleCurrentWeather, []);
   useEffect(fetchAndHandleWeatherForecast, []);
+  useEffect(handlePrecipitation, [weatherNow, weatherForecast]);
 
-  function currentIcon(arg) {
-    return (
-      <img
-        src={`http://openweathermap.org/img/wn/${arg}@2x.png`}
-        alt={weatherNow.currentDescription}
-        title={weatherNow.currentDescription}
-        id="weather-icon"
-      />
-    );
-  }
-
-  function currentWindSpeed(arg) {
-    if (arg <= 6) {
-      return "calm";
-    } else if (arg <= 15) {
-      return "light breeze";
-    } else if (arg <= 33) {
-      return "moderate breeze";
-    } else if (arg <= 49) {
-      return "strong breeze";
-    } else {
-      return "strong wind";
-    }
-  }
-
-  function willItRain(
-    currentIcon,
-    rainInThreeHours,
-    rainInSixHours,
-    rainInNineHours,
-    rainInTwelveHours
-  ) {
-    if (!currentIcon.startsWith("09") && !currentIcon.startsWith("10")) {
-      if (rainInThreeHours) {
-        return <div>Rain expected within the next 3 h</div>;
-      } else if (rainInSixHours) {
-        return <div>Rain expected in approximately 6 h</div>;
-      } else if (rainInNineHours) {
-        return <div>Rain expected in approximately 9 h</div>;
-      } else if (rainInTwelveHours) {
-        return <div>Rain expected in approximately 12 h</div>;
-      } else if (!currentIcon.startsWith("13")) {
-        return (
-          <React.Fragment>
-            <div>No rain expected</div>
-          </React.Fragment>
-        );
-      }
-    }
-    if (currentIcon.startsWith("09") || currentIcon.startsWith("10")) {
-      if (!rainInThreeHours) {
-        return <div>Rain expected to stop within 3 h</div>;
-      } else if (!rainInSixHours) {
-        return <div>Rain expected to stop in approx. 6 h</div>;
-      } else if (!rainInNineHours) {
-        return <div>Rain expected to stop in approx. 9 h</div>;
-      } else if (!rainInTwelveHours) {
-        return <div>Rain expected to stop in approx. 12 h</div>;
-      } else {
-        return <div>Rain expected for at least another 12 h</div>;
-      }
-    }
-  }
-
-  return (
+  return !weatherNow || !weatherForecast ? null : (
     <div id="weather-component-container">
-      {weatherNow && weatherForecast && (
-        <div id="weather-component">
-          {currentIcon && currentIcon(weatherNow.currentIcon)}
-          <div id="temperature">{weatherNow.currentTemp + "° C"}</div>
-
-          <br />
-          {currentWindSpeed && (
-            <div>
-              Wind conditions:{" "}
-              {currentWindSpeed(weatherNow.currentWindSpeed)}
-            </div>
-          )}
-          {daylightNow && <div>Daylight remaining: {daylightRemaining}</div>}
-          <div>
-            {willItRain &&
-              willItRain(
-                weatherNow.currentIcon,
-                weatherForecast.rainInThreeHours,
-                weatherForecast.rainInSixHours,
-                weatherForecast.rainInNineHours,
-                weatherForecast.rainInTwelveHours
-              )}
-          </div>
-        </div>
-      )}
+      <div id="weather-component">
+        <img
+          src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
+          alt={weatherNow.description}
+          title={weatherNow.description}
+          id="weather-icon"
+        />
+        <div id="temperature">{weatherNow.temperature}&deg; C</div>
+        <br />
+        <div>Wind conditions: {windConditions}</div>
+        {daylightNow && <div>Daylight remaining: {daylightRemaining}</div>}
+        <div>{precipitationDetails}</div>
+      </div>
     </div>
   );
 }
