@@ -81,17 +81,17 @@ export function Weather() {
       } else if (weatherForecast.rainInSixHours || weatherForecast.snowInSixHours) {
         precipDetails = `${weatherForecast.rainInSixHours ? 'Rain' : 'Snow'} expected in next 6h`;
       } else {
-        precipDetails = 'No precipitation expected in next 6h'
+        precipDetails = 'No precipitation for at least 6h'
       }
     } else if (isRaining) {
       if (!weatherForecast.rainInThreeHours || !weatherForecast.rainInSixHours) {
-        precipDetails = `Rain expected to stop in next ${weatherForecast.rainInThreeHours ? '3' : '6'}h`;
+        precipDetails = `Rain should stop in next ${weatherForecast.rainInThreeHours ? '3' : '6'}h`;
       } else {
         precipDetails = `Rain to continue for at least 6h`;
       }
     } else if (isSnowing) {
       if (!weatherForecast.snowInThreeHours || !weatherForecast.snowInSixHours) {
-        precipDetails = `Snow expected to stop in next ${weatherForecast.snowInThreeHours ? '3' : '6'}h`;
+        precipDetails = `Snow should stop in next ${weatherForecast.snowInThreeHours ? '3' : '6'}h`;
       } else {
         precipDetails = `Snow to continue for at least 6h`;
       }
@@ -104,7 +104,6 @@ export function Weather() {
   useEffect(handlePrecipitation, [weatherNow, weatherForecast]);
 
   return !weatherNow || !weatherForecast ? null : (
-    // <div id="weather-component-container">
     <div id="weather-component">
       <img
         src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
@@ -119,6 +118,5 @@ export function Weather() {
         <p>{precipitationDetails}</p>
       </div>
     </div>
-    // </div>
   );
 }

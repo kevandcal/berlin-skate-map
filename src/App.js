@@ -10,13 +10,7 @@ export default function App() {
   return (
     <div id="app-container">
       <Header />
-      <div
-        style={{
-          width: "90vw",
-          height: "90vh",
-          marginBottom: "6vh"
-        }}
-      >
+      <div id='map-container'>
         <WrappedMap
           id="wrappedmap"
           googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GOOGLE_MAPS_API_KEY}`}
@@ -25,7 +19,7 @@ export default function App() {
             <div
               style={{
                 height: "100%",
-                border: "0.6vh #6e769e solid"
+                border: "5px #6e769e solid"
               }}
             />
           }
