@@ -6,58 +6,40 @@ import skatespots from './skatespots';
 export function Map() {
   const [selectedSpot, setSelectedSpot] = useState(null);
   const [largerImage, setLargerImage] = useState(null);
-  const [viewportWidth, setViewportWidth] = useState(null);
 
+  const setAllStateToNull = () => {
+    setSelectedSpot(null);
+    setLargerImage(null);
+  };
+
+  const handleImgClick = () => setLargerImage(prev => !prev && window.innerWidth <= 1800 ? "larger" : null);
 
   return (
     <GoogleMap
       defaultZoom={12}
-      defaultCenter={{
-        lat: 52.520008,
-        lng: 13.404954
-      }}
+      defaultCenter={{ lat: 52.520008, lng: 13.404954 }}
       defaultOptions={{ styles: customMapStyle }}
-      onClick={() => {
-        setSelectedSpot(null);
-        setLargerImage(null);
-      }}
+      onClick={setAllStateToNull}
     >
       {skatespots.map(spot => (
         <Marker
           key={spot.id}
-          position={{
-            lat: parseFloat(spot.lat),
-            lng: parseFloat(spot.lng)
-          }}
-          onClick={() => {
-            setSelectedSpot(spot);
-          }}
+          position={{ lat: parseFloat(spot.lat), lng: parseFloat(spot.lng) }}
+          onClick={() => setSelectedSpot(spot)}
         />
       ))}
-
       {selectedSpot && (
         <InfoWindow
-          position={{
-            lat: parseFloat(selectedSpot.lat),
-            lng: parseFloat(selectedSpot.lng)
-          }}
-          onCloseClick={() => {
-            setSelectedSpot(null);
-            setLargerImage(null);
-          }}
+          position={{ lat: parseFloat(selectedSpot.lat), lng: parseFloat(selectedSpot.lng) }}
+          onCloseClick={setAllStateToNull}
         >
           <div id="info-window" className={largerImage}>
             <div id="info-window-name">{selectedSpot.name}</div>
-            {selectedSpot.img !== "" && (
+            {selectedSpot.img && (
               <img
                 id="info-window-img"
-                onClick={() => {
-                  setViewportWidth(window.innerWidth);
-                  largerImage === null && viewportWidth <= 1800
-                    ? setLargerImage("larger")
-                    : setLargerImage(null)
-                }}
-                src={"img/skate-spots/" + selectedSpot.img}
+                onClick={handleImgClick}
+                src={selectedSpot.img}
                 className={largerImage}
                 alt="skate spot"
               />

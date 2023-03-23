@@ -43,7 +43,7 @@ header {
   line-height: 8.59vw;
   font-size: 12vw;
   font-weight: 800;
-  background: url("/img/east-side-gallery.jpeg") no-repeat;
+  background: url("img/east-side-gallery.jpeg") no-repeat;
   background-size: cover;
   -webkit-text-fill-color: transparent;
   background-clip: text;
