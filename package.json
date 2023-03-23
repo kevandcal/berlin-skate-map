@@ -2,7 +2,7 @@
   "name": "berlinskatemap",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://kevandcal.github.com/berlin-skate-map",
+  "homepage": "https://kevandcal.github.io/berlin-skate-map",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
