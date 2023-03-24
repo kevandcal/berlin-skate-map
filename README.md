@@ -4,11 +4,9 @@ This React project features skateboarding spots in Berlin plotted on a custom-st
 
 ## Demo
 
-![Berlin Skate Map](public/img/berlinskatemap-demo.gif)
+[<img src="src/img/berlinskatemap-demo.gif" width="600px" height="auto" />](https://kevandcal.github.io/berlin-skate-map/)
 
-## URL
-
-http://berlinskatemap.herokuapp.com/
+Click image to try for yourself
 
 ## Built with
 
