@@ -7,19 +7,21 @@ export function Map() {
   const [selectedSpot, setSelectedSpot] = useState(null);
   const [largerImage, setLargerImage] = useState(null);
 
-  const setAllStateToNull = () => {
+  const closeInfoWindow = () => {
     setSelectedSpot(null);
     setLargerImage(null);
   };
 
-  const handleImgClick = () => setLargerImage(prev => !prev && window.innerWidth <= 1800 ? "larger" : null);
+  const handleImgClick = () => {
+    setLargerImage(prev => !prev && window.innerWidth <= 1800 ? "larger" : null);
+  };
 
   return (
     <GoogleMap
       defaultZoom={12}
       defaultCenter={{ lat: 52.520008, lng: 13.404954 }}
       defaultOptions={{ styles: customMapStyle }}
-      onClick={setAllStateToNull}
+      onClick={closeInfoWindow}
     >
       {skatespots.map(spot => (
         <Marker
@@ -31,7 +33,7 @@ export function Map() {
       {selectedSpot && (
         <InfoWindow
           position={{ lat: parseFloat(selectedSpot.lat), lng: parseFloat(selectedSpot.lng) }}
-          onCloseClick={setAllStateToNull}
+          onCloseClick={closeInfoWindow}
         >
           <div id="info-window" className={largerImage}>
             <div id="info-window-name">{selectedSpot.name}</div>
