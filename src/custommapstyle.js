@@ -1,4 +1,4 @@
-export default [
+export const customMapStyle = [
     {
         elementType: "labels.icon",
         stylers: [{ visibility: "off" }]

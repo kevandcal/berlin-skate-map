@@ -6,7 +6,7 @@ import kleistparkImg from './img/skate-spots/kleistpark-tobi.jpg';
 import heidelbergerPlatzImg from './img/skate-spots/heidelberger-platz.jpeg';
 
 
-export default [
+export const skatespots = [
   {
     address: "Marchlewskistraße 111, 10243 Berlin",
     description: "Decently sized public cement park at Warschauer Strasse with quarter pipes, a nice hip, banks with boxes on top, a flatbar, a manual pad, etc.",
