@@ -1,29 +1,20 @@
 {
   "files": {
-    "main.css": "/berlin-skate-map/static/css/main.c50edcb1.chunk.css",
-    "main.js": "/berlin-skate-map/static/js/main.643fa0cb.chunk.js",
-    "main.js.map": "/berlin-skate-map/static/js/main.643fa0cb.chunk.js.map",
-    "runtime-main.js": "/berlin-skate-map/static/js/runtime-main.629cd12b.js",
-    "runtime-main.js.map": "/berlin-skate-map/static/js/runtime-main.629cd12b.js.map",
-    "static/js/2.77e53238.chunk.js": "/berlin-skate-map/static/js/2.77e53238.chunk.js",
-    "static/js/2.77e53238.chunk.js.map": "/berlin-skate-map/static/js/2.77e53238.chunk.js.map",
+    "main.css": "/berlin-skate-map/static/css/main.ca7a2564.css",
+    "main.js": "/berlin-skate-map/static/js/main.0fe7b094.js",
+    "static/media/luan-oliveira-berlin-baenke.gif": "/berlin-skate-map/static/media/luan-oliveira-berlin-baenke.3ebcaa7b6d3cac30d661.gif",
+    "static/media/albert-nyberg-kulturforum.gif": "/berlin-skate-map/static/media/albert-nyberg-kulturforum.a3c55c38d744429ca5f5.gif",
+    "static/media/dog-shit-spot.jpg": "/berlin-skate-map/static/media/dog-shit-spot.70f3553dd517f2310169.jpg",
+    "static/media/kleistpark-tobi.jpg": "/berlin-skate-map/static/media/kleistpark-tobi.6b1cd87b1590fa80bd04.jpg",
+    "static/media/berlin-skatehalle.jpeg": "/berlin-skate-map/static/media/berlin-skatehalle.e0e0c530867c12143a8a.jpeg",
+    "static/media/east-side-gallery.jpeg": "/berlin-skate-map/static/media/east-side-gallery.c3b33703f5e2c4794e1c.jpeg",
+    "static/media/heidelberger-platz.jpeg": "/berlin-skate-map/static/media/heidelberger-platz.3ca6cbcdcf9754faae4c.jpeg",
     "index.html": "/berlin-skate-map/index.html",
-    "precache-manifest.6114ca6f7b18902f7dfe3d2b55f9769e.js": "/berlin-skate-map/precache-manifest.6114ca6f7b18902f7dfe3d2b55f9769e.js",
-    "service-worker.js": "/berlin-skate-map/service-worker.js",
-    "static/css/main.c50edcb1.chunk.css.map": "/berlin-skate-map/static/css/main.c50edcb1.chunk.css.map",
-    "static/js/2.77e53238.chunk.js.LICENSE.txt": "/berlin-skate-map/static/js/2.77e53238.chunk.js.LICENSE.txt",
-    "static/media/albert-nyberg-kulturforum.gif": "/berlin-skate-map/static/media/albert-nyberg-kulturforum.8d75d78b.gif",
-    "static/media/berlin-skatehalle.jpeg": "/berlin-skate-map/static/media/berlin-skatehalle.155f754e.jpeg",
-    "static/media/dog-shit-spot.jpg": "/berlin-skate-map/static/media/dog-shit-spot.63c4195d.jpg",
-    "static/media/index.css": "/berlin-skate-map/static/media/east-side-gallery.d1eb72ed.jpeg",
-    "static/media/heidelberger-platz.jpeg": "/berlin-skate-map/static/media/heidelberger-platz.c9644ed0.jpeg",
-    "static/media/kleistpark-tobi.jpg": "/berlin-skate-map/static/media/kleistpark-tobi.7e233303.jpg",
-    "static/media/luan-oliveira-berlin-baenke.gif": "/berlin-skate-map/static/media/luan-oliveira-berlin-baenke.24afd7a7.gif"
+    "main.ca7a2564.css.map": "/berlin-skate-map/static/css/main.ca7a2564.css.map",
+    "main.0fe7b094.js.map": "/berlin-skate-map/static/js/main.0fe7b094.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.629cd12b.js",
-    "static/js/2.77e53238.chunk.js",
-    "static/css/main.c50edcb1.chunk.css",
-    "static/js/main.643fa0cb.chunk.js"
+    "static/css/main.ca7a2564.css",
+    "static/js/main.0fe7b094.js"
   ]
 }
