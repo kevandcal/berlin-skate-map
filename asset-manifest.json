@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/berlin-skate-map/static/css/main.c50edcb1.chunk.css",
+    "main.js": "/berlin-skate-map/static/js/main.643fa0cb.chunk.js",
+    "main.js.map": "/berlin-skate-map/static/js/main.643fa0cb.chunk.js.map",
+    "runtime-main.js": "/berlin-skate-map/static/js/runtime-main.629cd12b.js",
+    "runtime-main.js.map": "/berlin-skate-map/static/js/runtime-main.629cd12b.js.map",
+    "static/js/2.77e53238.chunk.js": "/berlin-skate-map/static/js/2.77e53238.chunk.js",
+    "static/js/2.77e53238.chunk.js.map": "/berlin-skate-map/static/js/2.77e53238.chunk.js.map",
+    "index.html": "/berlin-skate-map/index.html",
+    "precache-manifest.6114ca6f7b18902f7dfe3d2b55f9769e.js": "/berlin-skate-map/precache-manifest.6114ca6f7b18902f7dfe3d2b55f9769e.js",
+    "service-worker.js": "/berlin-skate-map/service-worker.js",
+    "static/css/main.c50edcb1.chunk.css.map": "/berlin-skate-map/static/css/main.c50edcb1.chunk.css.map",
+    "static/js/2.77e53238.chunk.js.LICENSE.txt": "/berlin-skate-map/static/js/2.77e53238.chunk.js.LICENSE.txt",
+    "static/media/albert-nyberg-kulturforum.gif": "/berlin-skate-map/static/media/albert-nyberg-kulturforum.8d75d78b.gif",
+    "static/media/berlin-skatehalle.jpeg": "/berlin-skate-map/static/media/berlin-skatehalle.155f754e.jpeg",
+    "static/media/dog-shit-spot.jpg": "/berlin-skate-map/static/media/dog-shit-spot.63c4195d.jpg",
+    "static/media/index.css": "/berlin-skate-map/static/media/east-side-gallery.d1eb72ed.jpeg",
+    "static/media/heidelberger-platz.jpeg": "/berlin-skate-map/static/media/heidelberger-platz.c9644ed0.jpeg",
+    "static/media/kleistpark-tobi.jpg": "/berlin-skate-map/static/media/kleistpark-tobi.7e233303.jpg",
+    "static/media/luan-oliveira-berlin-baenke.gif": "/berlin-skate-map/static/media/luan-oliveira-berlin-baenke.24afd7a7.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.629cd12b.js",
+    "static/js/2.77e53238.chunk.js",
+    "static/css/main.c50edcb1.chunk.css",
+    "static/js/main.643fa0cb.chunk.js"
+  ]
+}
