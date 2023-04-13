@@ -1,26 +1,20 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, InfoWindow, LoadScript } from '@react-google-maps/api';
 import { customMapStyle } from "../custommapstyle";
 import { skatespots } from '../skatespots';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
-export const Map = memo(() => {
+const containerStyle = {
+  height: "100%",
+  border: "5px #6e769e solid"
+};
+
+const mapCenter = { lat: 52.520008, lng: 13.404954 };
+
+export function Map() {
   const [selectedSpot, setSelectedSpot] = useState(null);
-  const [largerImage, setLargerImage] = useState(null);
 
-  const containerStyle = {
-    height: "100%",
-    border: "5px #6e769e solid"
-  };
-
-  const closeInfoWindow = () => {
-    setSelectedSpot(null);
-    setLargerImage(null);
-  };
-
-  const handleImgClick = () => {
-    setLargerImage(prev => !prev && window.innerWidth <= 1800 ? "larger" : null);
-  };
+  const closeInfoWindow = () => setSelectedSpot(null);
 
   useEffect(() => console.log('Hi there, thanks for inspecting my app. If you see "ERR_BLOCKED_BY_CLIENT" in your console, it is likely caused by your adblocker.'), []);
 
@@ -28,7 +22,7 @@ export const Map = memo(() => {
     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={{ lat: 52.520008, lng: 13.404954 }}
+        center={mapCenter}
         zoom={12}
         options={{ styles: customMapStyle }}
         onClick={closeInfoWindow}
@@ -45,34 +39,23 @@ export const Map = memo(() => {
             position={{ lat: parseFloat(selectedSpot.lat), lng: parseFloat(selectedSpot.lng) }}
             onCloseClick={closeInfoWindow}
           >
-            <div id="info-window" className={largerImage}>
+            <div id="info-window">
               <div id="info-window-name">{selectedSpot.name}</div>
               {selectedSpot.img && (
-                <img
-                  id="info-window-img"
-                  onClick={handleImgClick}
-                  src={selectedSpot.img}
-                  className={largerImage}
-                  alt="skate spot"
-                />
+                <img id="info-window-img" src={selectedSpot.img} alt="skate spot" />
               )}
               <div id="info-window-description">
                 {selectedSpot.description}
               </div>
-              <div id="info-window-address-directions-container">
-                <div id="info-window-address">
+              <a target="_blank" rel="noopener noreferrer" href={selectedSpot.directions}>
+                <button id="info-window-address" title='click for directions'>
                   {selectedSpot.address}
-                </div>{" "}
-                <a target="_blank" rel="noopener noreferrer" href={selectedSpot.directions}>
-                  <button id="info-window-directions">
-                    Directions
-                  </button>
-                </a>
-              </div>
+                </button>
+              </a>
             </div>
           </InfoWindow>
         )}
       </GoogleMap>
     </LoadScript>
   );
-});
+};
