@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import { GoogleMap, Marker, InfoWindow, LoadScript } from '@react-google-maps/api';
-import { customMapStyle } from "./custommapstyle";
-import { skatespots } from './skatespots';
+import { customMapStyle } from "../custommapstyle";
+import { skatespots } from '../skatespots';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 export const Map = memo(() => {
@@ -22,7 +22,7 @@ export const Map = memo(() => {
     setLargerImage(prev => !prev && window.innerWidth <= 1800 ? "larger" : null);
   };
 
-  useEffect(() => console.log('Hi there, thanks for inspecting my app. If you see an "ERR_BLOCKED_BY_CLIENT" error in the console, it is likely caused by your adblocker.'), []);
+  useEffect(() => console.log('Hi there, thanks for inspecting my app. If you see "ERR_BLOCKED_BY_CLIENT" in your console, it is likely caused by your adblocker.'), []);
 
   return (
     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
@@ -63,7 +63,7 @@ export const Map = memo(() => {
                 <div id="info-window-address">
                   {selectedSpot.address}
                 </div>{" "}
-                <a target={"_blank"} rel="noopener noreferrer" href={selectedSpot.directions}>
+                <a target="_blank" rel="noopener noreferrer" href={selectedSpot.directions}>
                   <button id="info-window-directions">
                     Directions
                   </button>
