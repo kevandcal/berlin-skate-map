@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 
-export function Weather() {
+export function Weather({ berlinCoordinates }) {
+  const { lat, lng: lon } = berlinCoordinates;
   const [weatherNow, setWeatherNow] = useState();
   const [weatherForecast, setWeatherForecast] = useState();
   const [daylightNow, setDaylightNow] = useState(false);
@@ -24,11 +24,15 @@ export function Weather() {
     }
   };
 
-  const weatherApiEndpoint = path => `https://api.openweathermap.org/data/2.5/${path}?id=2950159&APPID=${OPEN_WEATHER_MAP_KEY}&units=metric`;
+  const apiUrl = 'api.openweathermap.org/data/2.5';
+  const apiQueryString = `?lat=${lat}&lon=${lon}&appid=${OPEN_WEATHER_MAP_KEY}&units=metric`;
+  const apiEndpointCurrentWeather = `https://${apiUrl}/weather${apiQueryString}`;
+  const apiEndpointWeatherForecast = `http://${apiUrl}/forecast${apiQueryString}`;
+  const apiEndpointAirQuality = `http://${apiUrl}/air_pollution${apiQueryString}`;
 
   const fetchAndSetWeatherNow = () => {
-    const endpoint = weatherApiEndpoint('weather');
-    axios.get(endpoint)
+    fetch(apiEndpointCurrentWeather)
+      .then(res => res.json())
       .then(({ data }) => {
         setWeatherNow({
           temperature: data.main.temp,
@@ -36,9 +40,10 @@ export function Weather() {
           wind: data.wind.speed,
           icon: data.weather[0].icon,
         });
-        setInterval(() => {
-          handleDaylight(data.sys.sunrise * 1000, data.sys.sunset * 1000);
-        }, 1000);
+        // setInterval(() => {
+        //   handleDaylight(data.sys.sunrise * 1000, data.sys.sunset * 1000);
+        // }, 1000);
+        handleDaylight(data.sys.sunrise * 1000, data.sys.sunset * 1000);
       })
       .catch(err => {
         console.log("GET api.openweathermap WEATHER catch err: ", err);
@@ -46,8 +51,8 @@ export function Weather() {
   };
 
   const fetchAndSetWeatherForecast = () => {
-    const endpoint = weatherApiEndpoint('forecast');
-    axios.get(endpoint)
+    fetch(apiEndpointWeatherForecast)
+      .then(res => res.json())
       .then(({ data }) => {
         setWeatherForecast({
           rainInThreeHours: data.list[0].rain,
@@ -99,9 +104,16 @@ export function Weather() {
     setPrecipitationDetails(precipDetails);
   }
 
-  useEffect(fetchAndSetWeatherNow, []);
-  useEffect(fetchAndSetWeatherForecast, []);
+  useEffect(fetchAndSetWeatherNow, [apiEndpointCurrentWeather]);
+  useEffect(fetchAndSetWeatherForecast, [apiEndpointWeatherForecast]);
   useEffect(handlePrecipitation, [weatherNow, weatherForecast]);
+
+  useEffect(() => {
+    fetch(apiEndpointAirQuality)
+      .then(res => res.json())
+      .then(data => console.log('air pollution data:', data))
+      .catch(err => console.log('air pollution error:', err));
+  }, [apiEndpointAirQuality]);
 
   return !weatherNow || !weatherForecast ? null : (
     <div id="weather-component">

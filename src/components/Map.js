@@ -9,9 +9,7 @@ const containerStyle = {
   border: "5px #6e769e solid"
 };
 
-const mapCenter = { lat: 52.520008, lng: 13.404954 };
-
-export function Map() {
+export function Map({ berlinCoordinates }) {
   const [selectedSpot, setSelectedSpot] = useState(null);
 
   const closeInfoWindow = () => setSelectedSpot(null);
@@ -22,7 +20,8 @@ export function Map() {
     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={mapCenter}
+        // center={mapCenter}
+        center={berlinCoordinates}
         zoom={12}
         options={{ styles: customMapStyle }}
         onClick={closeInfoWindow}
