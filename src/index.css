@@ -112,14 +112,14 @@ header {
 }
 
 #info-window-name {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 800;
   letter-spacing: 2px;
 }
 
 #info-window-description {
   font-size: 18px;
-  margin: 1vh 0;
+  margin-top: 1vh;
 }
 
 #info-window-img {
@@ -131,6 +131,7 @@ header {
   font-size: 16px;
   background-color: var(--darker-green);
   padding: 8px 12px;
+  margin: 1vh 0;
   border-radius: 6px;
   color: var(--custom-grey);
   border: none;
