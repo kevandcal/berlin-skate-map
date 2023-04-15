@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 
 const airQualityDictionary = {
@@ -13,23 +13,24 @@ const addZero = timeUnit => `${timeUnit < 10 ? '0' : ''}${timeUnit}`;
 
 export function Weather({ berlinCoordinates }) {
   const [weatherNow, setWeatherNow] = useState();
-  const [sunriseTime, setSunriseTime] = useState();
-  const [sunsetTime, setSunsetTime] = useState();
   const [daylightRemaining, setDaylightRemaining] = useState(null);
-  const [timeUntilDaylight, setTimeUntilDaylight] = useState(null);
+  const [timeNow, setTimeNow] = useState(Math.floor(Date.now() / 1000));
+  const [newHourHasBegun, setNewHourHasBegun] = useState(false);
   const [chanceOfPrecipitation, setChanceOfPrecipitation] = useState(0);
   const [chanceOfSnow, setChanceOfSnow] = useState(false);
   const [airQuality, setAirQuality] = useState('');
 
+  const timeRef = useRef();
+
   const { lat, lng: lon } = berlinCoordinates;
   const apiUrl = 'api.openweathermap.org/data/2.5';
   const apiQueryString = `?lat=${lat}&lon=${lon}&appid=${OPEN_WEATHER_MAP_KEY}&units=metric`;
-  const apiEndpointCurrentWeather = `https://${apiUrl}/weather${apiQueryString}`;
+  const apiEndpointWeatherNow = `https://${apiUrl}/weather${apiQueryString}`;
   const apiEndpointWeatherForecast = `http://${apiUrl}/forecast${apiQueryString}`;
   const apiEndpointAirQuality = `http://${apiUrl}/air_pollution${apiQueryString}`;
 
-  const fetchAndSetWeatherNow = () => {
-    fetch(apiEndpointCurrentWeather)
+  const fetchAndSetWeatherNow = useCallback(() => {
+    fetch(apiEndpointWeatherNow)
       .then(res => res.json())
       .then(({ main, weather, wind, sys }) => {
         const windSpeedKmPerH = Math.round(wind.speed * 3.6); // wind speed is given in meters per second
@@ -39,19 +40,17 @@ export function Weather({ berlinCoordinates }) {
           wind: windSpeedKmPerH,
           icon: weather[0].icon,
         });
-        setSunriseTime(sys.sunrise * 1000);
-        setSunsetTime(sys.sunset * 1000);
+        timeRef.current = { sunrise: sys.sunrise, sunset: sys.sunset }
       })
       .catch(err => {
         console.log("GET api.openweathermap WEATHER catch err: ", err);
       });
-  };
+  }, [apiEndpointWeatherNow]);
 
-  const fetchAndSetWeatherForecast = () => {
+  const fetchAndSetWeatherForecast = useCallback(() => {
     fetch(apiEndpointWeatherForecast)
       .then(res => res.json())
       .then(({ list }) => {
-        console.log('forecast list:', list);
         let chanceOfPrecip = 0;
         for (let i = 0; i <= 7; i++) {
           const { pop } = list[i];
@@ -65,9 +64,9 @@ export function Weather({ berlinCoordinates }) {
       .catch(err => {
         console.log("GET api.openweathermap FORECAST catch err: ", err);
       });
-  };
+  }, [apiEndpointWeatherForecast]);
 
-  const fetchAndSetAirQuality = () => {
+  const fetchAndSetAirQuality = useCallback(() => {
     fetch(apiEndpointAirQuality)
       .then(res => res.json())
       .then(({ list }) => {
@@ -75,33 +74,41 @@ export function Weather({ berlinCoordinates }) {
         setAirQuality(wordValue);
       })
       .catch(err => console.log('air pollution error:', err));
-  };
+  }, [apiEndpointAirQuality]);
 
-  const handleDaylight = useCallback(() => {
-    if (!sunriseTime || !sunsetTime) {
-      return;
-    }
-    const timeNow = Date.now();
-    const sunIsUp = sunriseTime < timeNow && timeNow < sunsetTime;
-    const timeInFuture = sunIsUp ? sunsetTime : sunriseTime;
-    const secondsLeft = Math.floor((timeInFuture - timeNow) / 1000);
-    const hours = Math.floor(secondsLeft / (60 * 60));
-    const minutes = Math.floor((secondsLeft - (hours * 60 * 60)) / 60);
-    const seconds = Math.floor(secondsLeft - (hours * 60 * 60) - (minutes * 60));
-    const formattedTime = `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
-    setDaylightRemaining(sunIsUp ? formattedTime : null);
-    setTimeUntilDaylight(sunIsUp ? null : formattedTime);
-  }, [sunriseTime, sunsetTime]);
-
-  const handleDaylightInterval = () => {
-    const intervalId = setInterval(handleDaylight, 1000);
+  const updateTimeNow = () => {
+    const intervalId = setInterval(() => setTimeNow(prev => prev + 1), 1000);
     return () => clearInterval(intervalId);
   };
 
-  useEffect(fetchAndSetWeatherNow, [apiEndpointCurrentWeather]);
-  useEffect(fetchAndSetWeatherForecast, [apiEndpointWeatherForecast]);
-  useEffect(fetchAndSetAirQuality, [apiEndpointAirQuality]);
-  useEffect(handleDaylightInterval, [handleDaylight]);
+  const handleCountdown = () => {
+    const sunIsUp = timeRef.current?.sunrise < timeNow && timeNow < timeRef.current?.sunset;
+    setNewHourHasBegun(timeNow % 3600 === 0);
+    if (sunIsUp) {
+      const secondsLeft = Math.floor(timeRef.current?.sunset - timeNow);
+      const hours = Math.floor(secondsLeft / (60 * 60));
+      const minutes = Math.floor((secondsLeft - (hours * 60 * 60)) / 60);
+      const seconds = Math.floor(secondsLeft - (hours * 60 * 60) - (minutes * 60));
+      setDaylightRemaining(`${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`);
+    } else {
+      setDaylightRemaining(null);
+    }
+  };
+
+  const fetchNewDataAtTopOfHour = () => {
+    if (newHourHasBegun) {
+      fetchAndSetWeatherNow();
+      fetchAndSetWeatherForecast();
+      fetchAndSetAirQuality();
+    }
+  };
+
+  useEffect(fetchAndSetWeatherNow, [fetchAndSetWeatherNow]);
+  useEffect(fetchAndSetWeatherForecast, [fetchAndSetWeatherForecast]);
+  useEffect(fetchAndSetAirQuality, [fetchAndSetAirQuality]);
+  useEffect(updateTimeNow, []);
+  useEffect(handleCountdown, [timeNow]);
+  useEffect(fetchNewDataAtTopOfHour, [newHourHasBegun, fetchAndSetWeatherNow, fetchAndSetWeatherForecast, fetchAndSetAirQuality]);
 
   return !weatherNow ? null : (
     <div id="weather-component">
@@ -118,7 +125,6 @@ export function Weather({ berlinCoordinates }) {
         {airQuality && <p>Air quality: {airQuality}</p>}
         {chanceOfPrecipitation && <p>Chance of rain {chanceOfSnow && 'or snow'} next 24h: {chanceOfPrecipitation * 100}%</p>}
         {daylightRemaining && <p>Daylight remaining: {daylightRemaining}</p>}
-        {timeUntilDaylight && <p>Time until daylight: {timeUntilDaylight}</p>}
       </div>
     </div>
   );
