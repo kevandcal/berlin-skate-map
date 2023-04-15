@@ -51,6 +51,7 @@ export function Weather({ berlinCoordinates }) {
     fetch(apiEndpointWeatherForecast)
       .then(res => res.json())
       .then(({ list }) => {
+        console.log('forecast list:', list);
         let chanceOfPrecip = 0;
         for (let i = 0; i <= 7; i++) {
           const { pop } = list[i];
@@ -80,7 +81,7 @@ export function Weather({ berlinCoordinates }) {
     if (!sunriseTime || !sunsetTime) {
       return;
     }
-    const timeNow = new Date().getTime();
+    const timeNow = Date.now();
     const sunIsUp = sunriseTime < timeNow && timeNow < sunsetTime;
     const timeInFuture = sunIsUp ? sunsetTime : sunriseTime;
     const secondsLeft = Math.floor((timeInFuture - timeNow) / 1000);
