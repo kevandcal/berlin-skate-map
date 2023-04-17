@@ -11,12 +11,14 @@ const airQualityDictionary = {
 
 const addZero = timeUnit => `${timeUnit < 10 ? '0' : ''}${timeUnit}`;
 
+const roundToOneDecimal = number => Math.round(number * 10) / 10;
+
 export function Weather({ berlinCoordinates }) {
-  const [weatherNow, setWeatherNow] = useState();
+  const [weatherNow, setWeatherNow] = useState({});
+  const [weatherToday, setWeatherToday] = useState({});
   const [daylightRemaining, setDaylightRemaining] = useState(null);
   const [timeNow, setTimeNow] = useState(Math.floor(Date.now() / 1000));
   const [newHourHasBegun, setNewHourHasBegun] = useState(false);
-  const [chanceOfPrecipitation, setChanceOfPrecipitation] = useState(0);
   const [airQuality, setAirQuality] = useState('');
 
   const timeRef = useRef();
@@ -32,13 +34,17 @@ export function Weather({ berlinCoordinates }) {
     fetch(apiEndpointWeatherNow)
       .then(res => res.json())
       .then(({ main, weather, wind, sys }) => {
-        const windSpeedKmPerH = Math.round(wind.speed * 3.6); // multiplying by 3.6 converts m/s to km/h
+        const windSpeed = Math.round(wind.speed * 3.6); // m/s -> km/h
         setWeatherNow({
-          temperature: main.temp,
-          description: weather[0].description,
-          wind: windSpeedKmPerH,
+          temperature: roundToOneDecimal(main.temp),
+          windSpeed,
           icon: weather[0].icon,
         });
+        setWeatherToday(prev => ({
+          ...prev,
+          temperatureMax: roundToOneDecimal(main.temp_max),
+          temperatureMin: roundToOneDecimal(main.temp_min),
+        }));
         timeRef.current = { sunrise: sys.sunrise, sunset: sys.sunset }
       })
       .catch(err => {
@@ -58,7 +64,10 @@ export function Weather({ berlinCoordinates }) {
             break;
           }
         }
-        setChanceOfPrecipitation(chanceOfPrecip);
+        setWeatherToday(prev => ({
+          ...prev,
+          chanceOfPrecipitation: chanceOfPrecip
+        }));
       })
       .catch(err => {
         console.log("GET api.openweathermap FORECAST catch err: ", err);
@@ -114,12 +123,12 @@ export function Weather({ berlinCoordinates }) {
         title={weatherNow.description}
         id="weather-icon"
       />
-      <p id="temperature">{weatherNow.temperature}&deg; C</p>
+      <p id="temperature">{weatherNow.temperature}&deg;&thinsp;C</p>
       <div id="weather-text">
-        <p>{weatherNow.description}</p>
-        <p>Wind speed: {weatherNow.wind} km/h</p>
+        <p>Max/min: {weatherToday.temperatureMax}&deg;&thinsp;C/{weatherToday.temperatureMin}&deg;&thinsp;C</p>
+        <p>Wind speed: {weatherNow.windSpeed} km/h</p>
         {airQuality && <p>Air quality: {airQuality}</p>}
-        {chanceOfPrecipitation && <p>Chance of precipitation next 24h: {chanceOfPrecipitation * 100}%</p>}
+        {weatherToday.chanceOfPrecipitation && <p>Chance of precipitation rest of day: {weatherToday.chanceOfPrecipitation * 100}%</p>}
         {daylightRemaining && <p>Daylight remaining: {daylightRemaining}</p>}
       </div>
     </div>
