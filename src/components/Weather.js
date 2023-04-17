@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUmbrella, faLungs, faWind } from '@fortawesome/free-solid-svg-icons';
+import { Daylight } from './Daylight';
 const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 
 const airQualityDictionary = {
@@ -9,15 +11,13 @@ const airQualityDictionary = {
   4: 'Poor',
   5: 'Very Poor'
 };
-const addZero = timeUnit => `${timeUnit < 10 ? '0' : ''}${timeUnit}`;
 const roundToOneDecimal = number => Math.round(number * 10) / 10;
 
 export function Weather({ berlinCoordinates }) {
-  const [weatherNow, setWeatherNow] = useState({});
-  const [weatherToday, setWeatherToday] = useState({});
-  const [daylightRemaining, setDaylightRemaining] = useState(null);
+  const [weatherNow, setWeatherNow] = useState();
+  const [weatherToday, setWeatherToday] = useState();
   const [timeNow, setTimeNow] = useState(Math.floor(Date.now() / 1000));
-  const [newHourHasBegun, setNewHourHasBegun] = useState(false);
+  const [isTopOfHour, setIsTopOfHour] = useState(false);
   const [airQuality, setAirQuality] = useState('');
 
   const timeRef = useRef();
@@ -36,6 +36,7 @@ export function Weather({ berlinCoordinates }) {
         const windSpeed = Math.round(wind.speed * 3.6); // m/s -> km/h
         setWeatherNow({
           temperature: roundToOneDecimal(main.temp),
+          description: main.description,
           windSpeed,
           icon: weather[0].icon,
         });
@@ -65,7 +66,7 @@ export function Weather({ berlinCoordinates }) {
         }
         setWeatherToday(prev => ({
           ...prev,
-          chanceOfPrecipitation: chanceOfPrecip
+          chanceOfPrecipitation: chanceOfPrecip * 100 // decimal -> percent
         }));
       })
       .catch(err => {
@@ -85,22 +86,12 @@ export function Weather({ berlinCoordinates }) {
     return () => clearInterval(intervalId);
   };
 
-  const handleCountdown = () => {
-    const sunIsUp = timeRef.current?.sunrise < timeNow && timeNow < timeRef.current?.sunset;
-    setNewHourHasBegun(timeNow % 3600 === 0);
-    if (sunIsUp) {
-      const secondsLeft = Math.floor(timeRef.current?.sunset - timeNow);
-      const hours = Math.floor(secondsLeft / (60 * 60));
-      const minutes = Math.floor((secondsLeft - (hours * 60 * 60)) / 60);
-      const seconds = Math.floor(secondsLeft - (hours * 60 * 60) - (minutes * 60));
-      setDaylightRemaining(`${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`);
-    } else {
-      setDaylightRemaining(null);
-    }
+  const checkWhetherTopOfHour = () => {
+    setIsTopOfHour(timeNow % 3600 === 0);
   };
 
   const fetchNewDataAtTopOfHour = () => {
-    if (newHourHasBegun) {
+    if (isTopOfHour) {
       fetchAndSetWeatherNow();
       fetchAndSetWeatherForecast();
       fetchAndSetAirQuality();
@@ -111,8 +102,8 @@ export function Weather({ berlinCoordinates }) {
   useEffect(fetchAndSetWeatherForecast, [fetchAndSetWeatherForecast]);
   useEffect(fetchAndSetAirQuality, [fetchAndSetAirQuality]);
   useEffect(updateTimeNow, []);
-  useEffect(handleCountdown, [timeNow]);
-  useEffect(fetchNewDataAtTopOfHour, [newHourHasBegun, fetchAndSetWeatherNow, fetchAndSetWeatherForecast, fetchAndSetAirQuality]);
+  useEffect(checkWhetherTopOfHour, [timeNow]);
+  useEffect(fetchNewDataAtTopOfHour, [isTopOfHour, fetchAndSetWeatherNow, fetchAndSetWeatherForecast, fetchAndSetAirQuality]);
 
   return !weatherNow ? null : (
     <div id="weather-component">
@@ -127,10 +118,41 @@ export function Weather({ berlinCoordinates }) {
         <p>Max/min: {weatherToday.temperatureMax}&deg;&thinsp;C/{weatherToday.temperatureMin}&deg;&thinsp;C</p>
         <p>Wind speed: {weatherNow.windSpeed} km/h</p>
         {airQuality && <p>Air quality: {airQuality}</p>}
-        {weatherToday.chanceOfPrecipitation && <p>Chance of precipitation rest of day: {weatherToday.chanceOfPrecipitation * 100}%</p>}
-        {daylightRemaining && <p>Daylight remaining: {daylightRemaining}</p>}
-        <FontAwesomeIcon icon="fa-brands fa-twitter" />
+        {weatherToday.chanceOfPrecipitation && <p>Chance of precipitation rest of day: {weatherToday.chanceOfPrecipitation}%</p>}
+        <FontAwesomeIcon icon={faUmbrella} />
+        <FontAwesomeIcon icon={faWind} />
+        <FontAwesomeIcon icon={faLungs} />
+        <Daylight timeNow={timeNow} timeRef={timeRef} />
       </div>
     </div>
   );
+
+
+  // return !weatherNow ? null : (
+  //   <div id="weather-component">
+  //     <div id="weather-panel">
+  //       <div id="weather-panel-top-row">
+  //         <img
+  //           src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
+  //           alt={weatherNow.description}
+  //           title={weatherNow.description}
+  //           id="weather-icon"
+  //         />
+  //         <div id='temperature-container'>
+  //           <p id="temperature-now">{weatherNow.temperature}&deg;&thinsp;C</p>
+  //           <p id='temperature-range'>Max/min: {weatherToday.temperatureMax}&deg;&thinsp;C/{weatherToday.temperatureMin}&deg;&thinsp;C</p>
+  //         </div>
+  //       </div>
+  //       <div id="weather-panel-bottom-row">
+  //         <p>Wind speed: {weatherNow.windSpeed} km/h</p>
+  //         {airQuality && <p>Air quality: {airQuality}</p>}
+  //         {weatherToday.chanceOfPrecipitation && <p>Chance of precipitation rest of day: {weatherToday.chanceOfPrecipitation}%</p>}
+  //         <FontAwesomeIcon icon={faUmbrella} />
+  //         <FontAwesomeIcon icon={faWind} />
+  //         <FontAwesomeIcon icon={faLungs} />
+  //       </div>
+  //     </div>
+  //     <Daylight timeNow={timeNow} timeRef={timeRef} />
+  //   </div>
+  // );
 }
