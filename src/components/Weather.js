@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 
 const airQualityDictionary = {
@@ -8,9 +9,7 @@ const airQualityDictionary = {
   4: 'Poor',
   5: 'Very Poor'
 };
-
 const addZero = timeUnit => `${timeUnit < 10 ? '0' : ''}${timeUnit}`;
-
 const roundToOneDecimal = number => Math.round(number * 10) / 10;
 
 export function Weather({ berlinCoordinates }) {
@@ -130,6 +129,7 @@ export function Weather({ berlinCoordinates }) {
         {airQuality && <p>Air quality: {airQuality}</p>}
         {weatherToday.chanceOfPrecipitation && <p>Chance of precipitation rest of day: {weatherToday.chanceOfPrecipitation * 100}%</p>}
         {daylightRemaining && <p>Daylight remaining: {daylightRemaining}</p>}
+        <FontAwesomeIcon icon="fa-brands fa-twitter" />
       </div>
     </div>
   );
