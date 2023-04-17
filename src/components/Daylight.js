@@ -2,19 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 const addZero = timeUnit => `${timeUnit < 10 ? '0' : ''}${timeUnit}`;
 
-const styles = {
-  container: {
-    fontSize: '20px',
-    height: '80px',
-    width: '300px',
-    backgroundColor: '#1b3d15',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '10px'
-  }
-}
-
 export function Daylight({ timeRef, timeNow }) {
   const [daylightRemaining, setDaylightRemaining] = useState(null);
 

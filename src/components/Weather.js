@@ -15,8 +15,11 @@ const roundToOneDecimal = number => Math.round(number * 10) / 10;
 export function Weather({ berlinCoordinates, timeRef, timeNow }) {
   const [weatherNow, setWeatherNow] = useState();
   const [weatherToday, setWeatherToday] = useState();
-  const [isTopOfHour, setIsTopOfHour] = useState(false);
+  // const [isTopOfHour, setIsTopOfHour] = useState(false);
   const [airQuality, setAirQuality] = useState('');
+
+  // const isTopOfHour = timeNow % 3600 === 0;
+  const isTopOfHour = timeNow % 10 === 0;
 
   const { lat, lng: lon } = berlinCoordinates;
   const apiUrl = 'api.openweathermap.org/data/2.5';
@@ -46,7 +49,7 @@ export function Weather({ berlinCoordinates, timeRef, timeNow }) {
       .catch(err => {
         console.log("GET api.openweathermap WEATHER catch err: ", err);
       });
-  }, [apiEndpointWeatherNow]);
+  }, [apiEndpointWeatherNow, timeRef]);
 
   const fetchAndSetWeatherForecast = useCallback(() => {
     fetch(apiEndpointWeatherForecast)
@@ -77,9 +80,9 @@ export function Weather({ berlinCoordinates, timeRef, timeNow }) {
       .catch(err => console.log('air pollution error:', err));
   }, [apiEndpointAirQuality]);
 
-  const checkWhetherTopOfHour = () => {
-    setIsTopOfHour(timeNow % 3600 === 0);
-  };
+  // const checkWhetherTopOfHour = () => {
+  //   setIsTopOfHour(timeNow % 3600 === 0);
+  // };
 
   const fetchNewDataAtTopOfHour = () => {
     if (isTopOfHour) {
@@ -92,8 +95,10 @@ export function Weather({ berlinCoordinates, timeRef, timeNow }) {
   useEffect(fetchAndSetWeatherNow, [fetchAndSetWeatherNow]);
   useEffect(fetchAndSetWeatherForecast, [fetchAndSetWeatherForecast]);
   useEffect(fetchAndSetAirQuality, [fetchAndSetAirQuality]);
-  useEffect(checkWhetherTopOfHour, [timeNow]);
+  // useEffect(checkWhetherTopOfHour, [timeNow]);
   useEffect(fetchNewDataAtTopOfHour, [isTopOfHour, fetchAndSetWeatherNow, fetchAndSetWeatherForecast, fetchAndSetAirQuality]);
+
+  useEffect(() => console.log('isTopOfHour:', isTopOfHour), [timeNow]);
 
   return !weatherNow ? null : (
     <div id="weather-panel">
