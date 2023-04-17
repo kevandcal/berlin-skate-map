@@ -8,18 +8,14 @@ const styles = {
     height: '80px',
     width: '300px',
     backgroundColor: '#1b3d15',
-    // backgroundColor: '#353c47',
-    // backgroundColor: 'rgba(53, 60, 71, 0.8)',
-    // backgroundColor: 'rgba(184, 195, 212, 0.8)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '10px'
-    // width: '100%'
   }
 }
 
-export function Daylight({ timeNow, timeRef }) {
+export function Daylight({ timeRef, timeNow }) {
   const [daylightRemaining, setDaylightRemaining] = useState(null);
 
   const handleCountdown = () => {
@@ -38,6 +34,6 @@ export function Daylight({ timeNow, timeRef }) {
   useEffect(handleCountdown, [timeNow, timeRef]);
 
   return !daylightRemaining ? null : (
-    <div style={styles.container}>Daylight remaining: {daylightRemaining}</div>
+    <div id="daylight-panel">Daylight remaining: {daylightRemaining}</div>
   )
 }

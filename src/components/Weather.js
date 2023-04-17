@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUmbrella, faLungs, faWind } from '@fortawesome/free-solid-svg-icons';
-import { Daylight } from './Daylight';
 const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 
 const airQualityDictionary = {
@@ -9,18 +8,15 @@ const airQualityDictionary = {
   2: 'Fair',
   3: 'Moderate',
   4: 'Poor',
-  5: 'Very Poor'
+  5: 'Terrible'
 };
 const roundToOneDecimal = number => Math.round(number * 10) / 10;
 
-export function Weather({ berlinCoordinates }) {
+export function Weather({ berlinCoordinates, timeRef, timeNow }) {
   const [weatherNow, setWeatherNow] = useState();
   const [weatherToday, setWeatherToday] = useState();
-  const [timeNow, setTimeNow] = useState(Math.floor(Date.now() / 1000));
   const [isTopOfHour, setIsTopOfHour] = useState(false);
   const [airQuality, setAirQuality] = useState('');
-
-  const timeRef = useRef();
 
   const { lat, lng: lon } = berlinCoordinates;
   const apiUrl = 'api.openweathermap.org/data/2.5';
@@ -81,11 +77,6 @@ export function Weather({ berlinCoordinates }) {
       .catch(err => console.log('air pollution error:', err));
   }, [apiEndpointAirQuality]);
 
-  const updateTimeNow = () => {
-    const intervalId = setInterval(() => setTimeNow(prev => prev + 1), 1000);
-    return () => clearInterval(intervalId);
-  };
-
   const checkWhetherTopOfHour = () => {
     setIsTopOfHour(timeNow % 3600 === 0);
   };
@@ -101,58 +92,45 @@ export function Weather({ berlinCoordinates }) {
   useEffect(fetchAndSetWeatherNow, [fetchAndSetWeatherNow]);
   useEffect(fetchAndSetWeatherForecast, [fetchAndSetWeatherForecast]);
   useEffect(fetchAndSetAirQuality, [fetchAndSetAirQuality]);
-  useEffect(updateTimeNow, []);
   useEffect(checkWhetherTopOfHour, [timeNow]);
   useEffect(fetchNewDataAtTopOfHour, [isTopOfHour, fetchAndSetWeatherNow, fetchAndSetWeatherForecast, fetchAndSetAirQuality]);
 
   return !weatherNow ? null : (
-    <div id="weather-component">
-      <img
-        src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
-        alt={weatherNow.description}
-        title={weatherNow.description}
-        id="weather-icon"
-      />
-      <p id="temperature">{weatherNow.temperature}&deg;&thinsp;C</p>
-      <div id="weather-text">
-        <p>Max/min: {weatherToday.temperatureMax}&deg;&thinsp;C/{weatherToday.temperatureMin}&deg;&thinsp;C</p>
-        <p>Wind speed: {weatherNow.windSpeed} km/h</p>
-        {airQuality && <p>Air quality: {airQuality}</p>}
-        {weatherToday.chanceOfPrecipitation && <p>Chance of precipitation rest of day: {weatherToday.chanceOfPrecipitation}%</p>}
-        <FontAwesomeIcon icon={faUmbrella} />
-        <FontAwesomeIcon icon={faWind} />
-        <FontAwesomeIcon icon={faLungs} />
-        <Daylight timeNow={timeNow} timeRef={timeRef} />
+    <div id="weather-panel">
+      <div id="weather-panel-top-row">
+        <img
+          src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
+          alt={weatherNow.description}
+          title={weatherNow.description}
+          id="weather-icon"
+        />
+        <div id='temperature-container'>
+          <p id="temperature-now">{weatherNow.temperature}&deg;&thinsp;C</p>
+          <div id='temperature-range'>
+            <p>H: {weatherToday.temperatureMax}&deg;&thinsp;C</p>
+            <div id='temperature-range-divider' />
+            <p>L: {weatherToday.temperatureMin}&deg;&thinsp;C</p>
+          </div>
+        </div>
+      </div>
+      <div id="weather-panel-bottom-row">
+        <WeatherDetails icon={faUmbrella} value={weatherToday.chanceOfPrecipitation} unit='%' subtitle='Chance rest of day' />
+        <WeatherDetails icon={faWind} value={weatherNow.windSpeed} unit='km/h' subtitle='Wind speed' />
+        <WeatherDetails icon={faLungs} value={airQuality} unit={null} subtitle='Air quality' />
       </div>
     </div>
   );
+}
 
 
-  // return !weatherNow ? null : (
-  //   <div id="weather-component">
-  //     <div id="weather-panel">
-  //       <div id="weather-panel-top-row">
-  //         <img
-  //           src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
-  //           alt={weatherNow.description}
-  //           title={weatherNow.description}
-  //           id="weather-icon"
-  //         />
-  //         <div id='temperature-container'>
-  //           <p id="temperature-now">{weatherNow.temperature}&deg;&thinsp;C</p>
-  //           <p id='temperature-range'>Max/min: {weatherToday.temperatureMax}&deg;&thinsp;C/{weatherToday.temperatureMin}&deg;&thinsp;C</p>
-  //         </div>
-  //       </div>
-  //       <div id="weather-panel-bottom-row">
-  //         <p>Wind speed: {weatherNow.windSpeed} km/h</p>
-  //         {airQuality && <p>Air quality: {airQuality}</p>}
-  //         {weatherToday.chanceOfPrecipitation && <p>Chance of precipitation rest of day: {weatherToday.chanceOfPrecipitation}%</p>}
-  //         <FontAwesomeIcon icon={faUmbrella} />
-  //         <FontAwesomeIcon icon={faWind} />
-  //         <FontAwesomeIcon icon={faLungs} />
-  //       </div>
-  //     </div>
-  //     <Daylight timeNow={timeNow} timeRef={timeRef} />
-  //   </div>
-  // );
+function WeatherDetails({ icon, value, unit, subtitle }) {
+  return (
+    <div className='weather-details-container'>
+      <div className='weather-details-main-content'>
+        <FontAwesomeIcon icon={icon} className='weather-details-icon' />
+        <p className='weather-details-value'>{value}&thinsp;{unit && unit}</p>
+      </div>
+      <p className='weather-details-subtitle'>{subtitle}</p>
+    </div>
+  );
 }
