@@ -17,7 +17,6 @@ export function Weather({ berlinCoordinates }) {
   const [timeNow, setTimeNow] = useState(Math.floor(Date.now() / 1000));
   const [newHourHasBegun, setNewHourHasBegun] = useState(false);
   const [chanceOfPrecipitation, setChanceOfPrecipitation] = useState(0);
-  const [chanceOfSnow, setChanceOfSnow] = useState(false);
   const [airQuality, setAirQuality] = useState('');
 
   const timeRef = useRef();
@@ -33,7 +32,7 @@ export function Weather({ berlinCoordinates }) {
     fetch(apiEndpointWeatherNow)
       .then(res => res.json())
       .then(({ main, weather, wind, sys }) => {
-        const windSpeedKmPerH = Math.round(wind.speed * 3.6); // wind speed is given in meters per second
+        const windSpeedKmPerH = Math.round(wind.speed * 3.6); // multiplying by 3.6 converts m/s to km/h
         setWeatherNow({
           temperature: main.temp,
           description: weather[0].description,
@@ -53,10 +52,10 @@ export function Weather({ berlinCoordinates }) {
       .then(({ list }) => {
         let chanceOfPrecip = 0;
         for (let i = 0; i <= 7; i++) {
-          const { pop } = list[i];
+          const { pop, dt_txt: time } = list[i];
           chanceOfPrecip = pop >= chanceOfPrecip ? pop : chanceOfPrecip;
-          if (list[i].snow) {
-            setChanceOfSnow(true);
+          if (time.endsWith('00:00:00')) {
+            break;
           }
         }
         setChanceOfPrecipitation(chanceOfPrecip);
@@ -69,10 +68,7 @@ export function Weather({ berlinCoordinates }) {
   const fetchAndSetAirQuality = useCallback(() => {
     fetch(apiEndpointAirQuality)
       .then(res => res.json())
-      .then(({ list }) => {
-        const wordValue = airQualityDictionary[list[0].main.aqi];
-        setAirQuality(wordValue);
-      })
+      .then(({ list }) => setAirQuality(airQualityDictionary[list[0].main.aqi]))
       .catch(err => console.log('air pollution error:', err));
   }, [apiEndpointAirQuality]);
 
@@ -123,7 +119,7 @@ export function Weather({ berlinCoordinates }) {
         <p>{weatherNow.description}</p>
         <p>Wind speed: {weatherNow.wind} km/h</p>
         {airQuality && <p>Air quality: {airQuality}</p>}
-        {chanceOfPrecipitation && <p>Chance of rain {chanceOfSnow && 'or snow'} next 24h: {chanceOfPrecipitation * 100}%</p>}
+        {chanceOfPrecipitation && <p>Chance of precipitation next 24h: {chanceOfPrecipitation * 100}%</p>}
         {daylightRemaining && <p>Daylight remaining: {daylightRemaining}</p>}
       </div>
     </div>
