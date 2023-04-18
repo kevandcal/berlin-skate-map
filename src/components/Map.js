@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, InfoWindow, LoadScript } from '@react-google-maps/api';
-import { customMapStyle } from "../custommapstyle";
-import { skatespots } from '../skatespots';
+import { customMapStyle } from "../data/custommapstyle";
+import { skatespots } from '../data/skatespots';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const containerStyle = {
@@ -20,7 +20,6 @@ export function Map({ berlinCoordinates }) {
     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        // center={mapCenter}
         center={berlinCoordinates}
         zoom={12}
         options={{ styles: customMapStyle }}

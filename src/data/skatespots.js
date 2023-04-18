@@ -1,10 +1,9 @@
-import dogShitSpotImg from './img/skate-spots/dog-shit-spot.jpg';
-import kulturforumImg from './img/skate-spots/albert-nyberg-kulturforum.gif';
-import berlinBaenkeImg from './img/skate-spots/luan-oliveira-berlin-baenke.gif';
-import skatehalleImg from './img/skate-spots/berlin-skatehalle.jpeg';
-import kleistparkImg from './img/skate-spots/kleistpark-tobi.jpg';
-import heidelbergerPlatzImg from './img/skate-spots/heidelberger-platz.jpeg';
-
+import dogShitSpotImg from '../img/skate-spots/dog-shit-spot.jpg';
+import kulturforumImg from '../img/skate-spots/albert-nyberg-kulturforum.gif';
+import berlinBaenkeImg from '../img/skate-spots/luan-oliveira-berlin-baenke.gif';
+import skatehalleImg from '../img/skate-spots/berlin-skatehalle.jpeg';
+import kleistparkImg from '../img/skate-spots/kleistpark-tobi.jpg';
+import heidelbergerPlatzImg from '../img/skate-spots/heidelberger-platz.jpeg';
 
 export const skatespots = [
   {
