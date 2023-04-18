@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUmbrella, faLungs, faWind } from '@fortawesome/free-solid-svg-icons';
+import { Daylight } from "./Daylight";
 const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 
 const airQualityDictionary = {
@@ -12,10 +13,12 @@ const airQualityDictionary = {
 };
 const roundToOneDecimal = number => Math.round(number * 10) / 10;
 
-export function Weather({ berlinCoordinates, timeRef, timeNow }) {
+export function Weather({ berlinCoordinates }) {
   const [weatherNow, setWeatherNow] = useState();
   const [weatherToday, setWeatherToday] = useState();
   const [airQuality, setAirQuality] = useState('');
+  const [timeNow, setTimeNow] = useState(Math.floor(Date.now() / 1000));
+  const timeRef = useRef();
 
   const isTopOfHour = timeNow % 3600 === 0;
 
@@ -78,6 +81,11 @@ export function Weather({ berlinCoordinates, timeRef, timeNow }) {
       .catch(err => console.log('air pollution error:', err));
   }, [apiEndpointAirQuality]);
 
+  const updateTimeNow = () => {
+    const intervalId = setInterval(() => setTimeNow(prev => prev + 1), 1000);
+    return () => clearInterval(intervalId);
+  };
+
   const fetchNewDataAtTopOfHour = () => {
     if (isTopOfHour) {
       fetchAndSetWeatherNow();
@@ -89,6 +97,7 @@ export function Weather({ berlinCoordinates, timeRef, timeNow }) {
   useEffect(fetchAndSetWeatherNow, [fetchAndSetWeatherNow]);
   useEffect(fetchAndSetWeatherForecast, [fetchAndSetWeatherForecast]);
   useEffect(fetchAndSetAirQuality, [fetchAndSetAirQuality]);
+  useEffect(updateTimeNow, []);
   useEffect(fetchNewDataAtTopOfHour, [isTopOfHour, fetchAndSetWeatherNow, fetchAndSetWeatherForecast, fetchAndSetAirQuality]);
 
   return !weatherNow ? null : (
@@ -103,21 +112,36 @@ export function Weather({ berlinCoordinates, timeRef, timeNow }) {
         <div id='temperature-container'>
           <p id="temperature-now">{weatherNow.temperature}&deg;&thinsp;C</p>
           <div id='temperature-range'>
-            <p>H: {weatherToday.temperatureMax}&deg;&thinsp;C</p>
+            <p>H: {weatherToday.temperatureMax}&deg;</p>
             <div id='temperature-range-divider' />
-            <p>L: {weatherToday.temperatureMin}&deg;&thinsp;C</p>
+            <p>L: {weatherToday.temperatureMin}&deg;</p>
           </div>
         </div>
       </div>
-      <div id="weather-panel-bottom-row">
-        <WeatherDetails icon={faUmbrella} value={weatherToday.chanceOfPrecipitation} unit='%' subtitle='Chance rest of day' />
-        <WeatherDetails icon={faWind} value={weatherNow.windSpeed} unit='km/h' subtitle='Wind speed' />
-        <WeatherDetails icon={faLungs} value={airQuality} unit={null} subtitle='Air quality' />
+      <div id="weather-panel-details-row">
+        <WeatherDetails
+          icon={faUmbrella}
+          value={weatherToday.chanceOfPrecipitation}
+          unit='%'
+          subtitle='Chance rest of day'
+        />
+        <WeatherDetails
+          icon={faWind}
+          value={weatherNow.windSpeed}
+          unit='km/h'
+          subtitle='Wind speed'
+        />
+        <WeatherDetails
+          icon={faLungs}
+          value={airQuality}
+          unit={null}
+          subtitle='Air quality'
+        />
       </div>
+      <Daylight timeRef={timeRef} timeNow={timeNow} />
     </div>
   );
 }
-
 
 function WeatherDetails({ icon, value, unit, subtitle }) {
   return (

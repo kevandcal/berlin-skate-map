@@ -34,6 +34,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  height: 380px;
   margin: var(--margin-width);
 }
 
@@ -42,11 +43,10 @@ header {
   height: 6vw;
 }
 
-#berlin-letters {
-  margin: 0 0 10px -10px;
-  width: 45vw;
-  line-height: 8.59vw;
-  font-size: 12vw;
+#logo {
+  margin: -5px 0 0 -5px;
+  font-size: 170px;
+  line-height: 125px;
   font-weight: 800;
   background: url("img/east-side-gallery.jpeg") no-repeat;
   background-size: cover;
@@ -55,10 +55,15 @@ header {
   -webkit-background-clip: text;
   z-index: 10;
   user-select: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 #skate-letters {
-  margin-left: 0.4vw;
+  padding-left: 5px;
 }
 
 #header-right {
@@ -67,28 +72,31 @@ header {
 }
 
 #weather-panel {
+  box-sizing: border-box;
   border-radius: 15px;
   border: 2px solid var(--darker-green);
   background-color: var(--panel-background-color);
-  margin-bottom: 10px;
-  padding: 15px;
+  padding: 0 15px;
+  display: grid;
+  /* grid-template-rows: 1.2fr 1fr 0.8fr; */
+  grid-template-rows: repeat(3, 1fr);
+  height: 100%;
 }
 
 #weather-panel-top-row {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
 }
 
 #weather-icon {
-  width: var(--weather-panel-subcomponent-width);
-  height: auto;
+  /* width: var(--weather-panel-subcomponent-width);
+  height: auto; */
+  height: 100%;
+  width: auto;
 }
 
 #temperature-container {
-  height: var(--weather-panel-subcomponent-width);
   width: var(--weather-panel-subcomponent-width);
   display: flex;
   flex-direction: column;
@@ -116,19 +124,18 @@ header {
 
 #temperature-range-divider {
   display: inline-block;
-  /* height: 16px; */
   height: 15px;
   width: 1px;
-  margin: 0 5px;
+  margin: 0 7px;
   background-color: grey;
 }
 
-#weather-panel-bottom-row {
+#weather-panel-details-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 15px;
-  height: 120px;
-  margin-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
 }
 
 .weather-details-container {
@@ -161,7 +168,6 @@ header {
   opacity: 0.5;
 }
 
-
 #weather-text {
   display: flex;
   flex-direction: column;
@@ -174,17 +180,11 @@ header {
   font-size: 1.8vw;
 }
 
-#daylight-panel {
+#daylight-container {
   font-size: 20px;
-  height: 80px;
-  /* width: 300px; */
-  width: 100%;
-  background-color: var(--panel-background-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 15px;
-  border: 2px solid var(--darker-green);
 }
 
 #map-container {

@@ -21,6 +21,6 @@ export function Daylight({ timeRef, timeNow }) {
   useEffect(handleCountdown, [timeNow, timeRef]);
 
   return !daylightRemaining ? null : (
-    <div id="daylight-panel">Daylight remaining: {daylightRemaining}</div>
+    <div id="daylight-container">Daylight remaining: {daylightRemaining}</div>
   )
 }
