@@ -1,26 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUmbrella, faLungs, faWind } from '@fortawesome/free-solid-svg-icons';
 import { Daylight } from "./Daylight";
+import { WeatherPanelDetailsRow } from "./WeatherPanelDetailsRow";
+import { Spinner } from './Spinner';
 const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 
-const airQualityDictionary = {
-  1: 'Good',
-  2: 'Fair',
-  3: 'Moderate',
-  4: 'Poor',
-  5: 'Terrible'
-};
 const roundToOneDecimal = number => Math.round(number * 10) / 10;
 
 export function Weather({ berlinCoordinates }) {
   const [weatherNow, setWeatherNow] = useState();
   const [weatherToday, setWeatherToday] = useState();
-  const [airQuality, setAirQuality] = useState('');
+  const [airQuality, setAirQuality] = useState();
   const [timeNow, setTimeNow] = useState(Math.floor(Date.now() / 1000));
   const timeRef = useRef();
 
   const isTopOfHour = timeNow % 3600 === 0;
+  const dataReady = weatherNow && weatherToday;
 
   const { lat, lng: lon } = berlinCoordinates;
   const apiUrl = 'api.openweathermap.org/data/2.5';
@@ -56,17 +50,17 @@ export function Weather({ berlinCoordinates }) {
     fetch(apiEndpointWeatherForecast)
       .then(res => res.json())
       .then(({ list }) => {
-        let chanceOfPrecip = 0;
+        let chance = 0;
         for (let i = 0; i <= 7; i++) {
           const { pop, dt_txt: time } = list[i];
-          chanceOfPrecip = pop >= chanceOfPrecip ? pop : chanceOfPrecip;
+          chance = pop >= chance ? pop : chance;
           if (time.endsWith('00:00:00')) {
             break;
           }
         }
         setWeatherToday(prev => ({
           ...prev,
-          chanceOfPrecipitation: chanceOfPrecip * 100 // decimal -> percent
+          chanceOfPrecip: chance * 100 // decimal -> percent
         }));
       })
       .catch(err => {
@@ -77,7 +71,7 @@ export function Weather({ berlinCoordinates }) {
   const fetchAndSetAirQuality = useCallback(() => {
     fetch(apiEndpointAirQuality)
       .then(res => res.json())
-      .then(({ list }) => setAirQuality(airQualityDictionary[list[0].main.aqi]))
+      .then(({ list }) => setAirQuality(list[0].main.aqi))
       .catch(err => console.log('air pollution error:', err));
   }, [apiEndpointAirQuality]);
 
@@ -100,57 +94,39 @@ export function Weather({ berlinCoordinates }) {
   useEffect(updateTimeNow, []);
   useEffect(fetchNewDataAtTopOfHour, [isTopOfHour, fetchAndSetWeatherNow, fetchAndSetWeatherForecast, fetchAndSetAirQuality]);
 
-  return !weatherNow ? null : (
+  return !dataReady ? <Spinner size='120px' /> : (
     <div id="weather-panel">
-      <div id="weather-panel-top-row">
-        <img
-          src={`http://openweathermap.org/img/wn/${weatherNow.icon}@2x.png`}
-          alt={weatherNow.description}
-          title={weatherNow.description}
-          id="weather-icon"
-        />
-        <div id='temperature-container'>
-          <p id="temperature-now">{weatherNow.temperature}&deg;&thinsp;C</p>
-          <div id='temperature-range'>
-            <p>H: {weatherToday.temperatureMax}&deg;</p>
-            <div id='temperature-range-divider' />
-            <p>L: {weatherToday.temperatureMin}&deg;</p>
-          </div>
-        </div>
-      </div>
-      <div id="weather-panel-details-row">
-        <WeatherDetails
-          icon={faUmbrella}
-          value={weatherToday.chanceOfPrecipitation}
-          unit='%'
-          subtitle='Chance rest of day'
-        />
-        <WeatherDetails
-          icon={faWind}
-          value={weatherNow.windSpeed}
-          unit='km/h'
-          subtitle='Wind speed'
-        />
-        <WeatherDetails
-          icon={faLungs}
-          value={airQuality}
-          unit={null}
-          subtitle='Air quality'
-        />
-      </div>
+      <WeatherPanelTopRow
+        icon={weatherNow?.icon}
+        description={weatherNow?.description}
+        tempNow={weatherNow.temperature}
+        tempMax={weatherToday.temperatureMax}
+        tempMin={weatherToday.temperatureMin}
+      />
+      <WeatherPanelDetailsRow
+        chanceOfPrecip={weatherToday?.chanceOfPrecip}
+        windSpeed={weatherNow?.windSpeed}
+        airQuality={airQuality}
+      />
       <Daylight timeRef={timeRef} timeNow={timeNow} />
     </div>
   );
 }
 
-function WeatherDetails({ icon, value, unit, subtitle }) {
+function WeatherPanelTopRow({ icon, description, tempNow, tempMax, tempMin }) {
+  const src = `http://openweathermap.org/img/wn/${icon}@2x.png`
+
   return (
-    <div className='weather-details-container'>
-      <div className='weather-details-main-content'>
-        <FontAwesomeIcon icon={icon} className='weather-details-icon' />
-        <p className='weather-details-value'>{value}&thinsp;{unit && unit}</p>
+    <div id="weather-panel-top-row">
+      <img src={src} alt={description} title={description} id="weather-icon" />
+      <div id='temperature-container'>
+        <p id="temperature-now">{tempNow}&deg;&thinsp;C</p>
+        <div id='temperature-range'>
+          <p>H: {tempMax}&deg;</p>
+          <div id='temperature-range-divider' />
+          <p>L: {tempMin}&deg;</p>
+        </div>
       </div>
-      <p className='weather-details-subtitle'>{subtitle}</p>
     </div>
-  );
+  )
 }

@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { faHourglass } from '@fortawesome/free-solid-svg-icons';
+import { WeatherDetails } from './WeatherDetails';
+import { Spinner } from './Spinner';
 
 const addZero = timeUnit => `${timeUnit < 10 ? '0' : ''}${timeUnit}`;
 
@@ -20,7 +23,9 @@ export function Daylight({ timeRef, timeNow }) {
 
   useEffect(handleCountdown, [timeNow, timeRef]);
 
-  return !daylightRemaining ? null : (
-    <div id="daylight-container">Daylight remaining: {daylightRemaining}</div>
-  )
+  return !daylightRemaining ? <Spinner size='40px' /> : (
+    <div id="daylight-container">
+      <WeatherDetails icon={faHourglass} value={daylightRemaining} largerValue label='Daylight remaining' />
+    </div>
+  );
 }
