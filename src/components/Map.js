@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, InfoWindow, LoadScript } from '@react-google-maps/api';
-import { customMapStyle } from "../data/custommapstyle";
-import { skatespots } from '../data/skatespots';
+import { customMapStyle } from "../data/customMapStyle";
+import { skateSpots } from '../data/skateSpots';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const containerStyle = {
@@ -27,7 +27,7 @@ export function Map({ berlinCoordinates }) {
         options={{ styles: customMapStyle }}
         onClick={closeInfoWindow}
       >
-        {skatespots.map(spot => (
+        {skateSpots.map(spot => (
           <Marker
             key={spot.id}
             position={{ lat: parseFloat(spot.lat), lng: parseFloat(spot.lng) }}

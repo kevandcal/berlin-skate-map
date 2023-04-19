@@ -1,11 +1,11 @@
 import dogShitSpotImg from '../img/skate-spots/dog-shit-spot.jpg';
 import kulturforumImg from '../img/skate-spots/albert-nyberg-kulturforum.gif';
 import berlinBaenkeImg from '../img/skate-spots/luan-oliveira-berlin-baenke.gif';
-import skatehalleImg from '../img/skate-spots/berlin-skatehalle.jpeg';
+import skatehalleImg from '../img/skate-spots/berlin-skatehalle.jpg';
 import kleistparkImg from '../img/skate-spots/kleistpark-tobi.jpg';
-import heidelbergerPlatzImg from '../img/skate-spots/heidelberger-platz.jpeg';
+import heidelbergerPlatzImg from '../img/skate-spots/heidelberger-platz.jpg';
 
-export const skatespots = [
+export const skateSpots = [
   {
     address: "Marchlewskistraße 111, 10243 Berlin",
     description: "Decently sized public cement park at Warschauer Strasse with quarter pipes, a nice hip, banks with boxes on top, a flatbar, a manual pad, etc.",
