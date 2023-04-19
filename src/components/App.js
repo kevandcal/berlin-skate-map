@@ -8,9 +8,9 @@ export default function App() {
   return (
     <div id="app-container">
       <Header berlinCoordinates={berlinCoordinates} />
-      <div id='map-container'>
+      <main id='map-container'>
         <Map berlinCoordinates={berlinCoordinates} />
-      </div>
+      </main>
     </div>
   );
 }
