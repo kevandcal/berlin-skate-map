@@ -21,10 +21,10 @@ export function Weather({ berlinCoordinates }) {
   const apiUrl = 'api.openweathermap.org/data/';
   const apiQueryString = `?lat=${lat}&lon=${lon}&appid=${OPEN_WEATHER_MAP_KEY}&units=metric`;
   const apiEndpointAirQuality = `http://${apiUrl}2.5/air_pollution${apiQueryString}`;
-  const apiEndpointOneCall = `https://${apiUrl}3.0/onecall${apiQueryString}&exclude=alerts,minutely`;
+  const apiEndpointWeather = `https://${apiUrl}3.0/onecall${apiQueryString}&exclude=alerts,minutely`;
 
-  const fetchOneCall = useCallback(() => {
-    fetch(apiEndpointOneCall)
+  const fetchWeather = useCallback(() => {
+    fetch(apiEndpointWeather)
       .then(res => res.json())
       .then(({ current, daily, hourly }) => {
         const { sunrise, sunset, temp: tempNow, weather } = current;
@@ -40,7 +40,7 @@ export function Weather({ berlinCoordinates }) {
         timeRef.current = { today: { sunrise, sunset }, tomorrow: { sunrise: daily[1].sunrise } }
       })
       .catch(err => console.log('one call api err:', err));
-  }, [apiEndpointOneCall])
+  }, [apiEndpointWeather])
 
   const fetchAirQuality = useCallback(() => {
     fetch(apiEndpointAirQuality)
@@ -56,15 +56,15 @@ export function Weather({ berlinCoordinates }) {
 
   const fetchNewDataAtTopOfHour = () => {
     if (isTopOfHour) {
-      fetchOneCall();
+      fetchWeather();
       fetchAirQuality();
     }
   };
 
-  useEffect(fetchOneCall, [fetchOneCall]);
+  useEffect(fetchWeather, [fetchWeather]);
   useEffect(fetchAirQuality, [fetchAirQuality]);
   useEffect(updateTimeNow, []);
-  useEffect(fetchNewDataAtTopOfHour, [isTopOfHour, fetchOneCall, fetchAirQuality]);
+  useEffect(fetchNewDataAtTopOfHour, [isTopOfHour, fetchWeather, fetchAirQuality]);
 
   return !dataReady ? <Spinner size='120px' /> : (
     <div id="weather-panel">

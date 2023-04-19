@@ -9,12 +9,14 @@ const containerStyle = {
   border: "5px #6e769e solid"
 };
 
+const message = 'Hi there, thanks for inspecting my app. If you see "ERR_BLOCKED_BY_CLIENT" in your console, it is likely caused by your adblocker.';
+
 export function Map({ berlinCoordinates }) {
   const [selectedSpot, setSelectedSpot] = useState(null);
 
   const closeInfoWindow = () => setSelectedSpot(null);
 
-  useEffect(() => console.log('Hi there, thanks for inspecting my app. If you see "ERR_BLOCKED_BY_CLIENT" in your console, it is likely caused by your adblocker.'), []);
+  useEffect(() => console.log(message), []);
 
   return (
     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
