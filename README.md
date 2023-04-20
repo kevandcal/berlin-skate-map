@@ -1,6 +1,6 @@
 # Berlin Skate Map
 
-This React project features skateboarding spots in Berlin plotted on a custom-styled Google Map and displays current weather and daylight conditions.
+This React project features skateboarding spots in Berlin plotted on a custom-styled Google Map and displays current weather, air quality, and daylight conditions.
 
 ## Demo
 
@@ -10,16 +10,17 @@ Click image to try for yourself
 
 ## Built with
 
-React, CSS, Open Weather Map API, Google Maps API, react-google-maps (library)
+React, CSS3, Open Weather Map API, Google Maps API, react-google-maps/api (library), Font Awesome icons
 
 ## Features
 
--   A custom-styled Google Map is embedded on the page, centered on Berlin with skate spots plotted on it using markers
--   Clicking any marker initializes a pop-up window with the name, a description, a photo/gif if one is in the database, and the address of the skate spot, as well as a `directions` button that opens Google Maps in a new tab with the destination pre-filled in
--   Clicking on the photo/gif causes it to grow in size, reformatting the pop-up window in the process; clicking it again makes it return to its original size
--   Clicking on the `x` in the pop-up window or anywhere outside of the pop-up window closes it
--   Because weather and daylight conditions are also important factors for skateboarding, relevant data are pulled from the Open Weather Map API when React mounts
--   A general weather icon and the current temperature are always rendered, and additional information is conditionally rendered:
--   If it is raining or snowing, the precipitation's forecasted end is displayed
--   If it is not raining or snowing, it is displayed whether/when precipitation is forecasted in the following 12 h
--   If a user loads the page during daytime, a timer counting down remaining daylight is rendered
+* A custom-styled Google Map is embedded on the page, centered on Berlin with skate spots plotted on it using markers
+* Clicking any marker initializes a pop-up window with a title, a description, a photo or gif if one is in the database, and a button that displays the address of the skate spot and opens the Google Maps directions interface in a new tab with the destination already filled in
+* Clicking either on the `x` in the top right of the pop-up window or anywhere on the map outside of the pop-up window closes it
+* Skateboarding-relevant data on Berlin's weather, air quality, and sunrise and sunset times (for calculating daylight) are fetched from the Open Weather Map API and displayed in a three-row panel
+  * The top row contains an icon representing the general weather conditions (e.g. cloudy, sunny, or raining) on the left and the current temperature as well as the daily high and low temperatures on the right
+  * The middle row displays the chance of precipitation for the rest of the day (i.e. from now until midnight), the current wind speed measured in kilometers per hour, and the current air quality in the form of a one-word string (good, fair, moderate, poor, or terrible)
+  * The bottom row displays a countdown of either daylight remaining or time until sunrise, depending on wether it is currently daytime or nighttime in Berlin
+* New data for the weather panel are fetched at the top of each hour to keep the app up to date even if it is not refreshed
+* A spinner is rendered while data are being fetched
+
