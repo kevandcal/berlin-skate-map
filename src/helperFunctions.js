@@ -7,7 +7,7 @@ export const handlePrecipitation = (hourlyData, setFunction) => {
     const { pop } = hourlyData[i];
     chance = pop >= chance ? pop : chance;
   }
-  setFunction(chance * 100); // decimal -> percent
+  setFunction(Math.round(chance * 100)); // decimal -> rounded percent
 };
 
 const addZero = number => `${number < 10 ? '0' : ''}${number}`;
