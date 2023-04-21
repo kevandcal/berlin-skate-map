@@ -78,8 +78,7 @@ export function Weather({ berlinCoordinates }) {
       <WeatherPanelDetailsRow
         chanceOfPrecip={chanceOfPrecip}
         windSpeed={windSpeed}
-        // airQuality={airQuality}
-        airQuality={3}
+        airQuality={airQuality}
       />
       <Daylight
         timeNow={timeNow}

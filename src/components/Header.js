@@ -11,9 +11,7 @@ export function Header({ berlinCoordinates }) {
           <span id="skate-letters">SKATE</span>
           MAP
         </div>
-        <div id='header-right'>
-          <Weather berlinCoordinates={berlinCoordinates} />
-        </div>
+        <Weather berlinCoordinates={berlinCoordinates} />
       </div>
     </header>
   );
