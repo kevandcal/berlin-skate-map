@@ -4,11 +4,6 @@ import { customMapStyle } from "../data/customMapStyle";
 import { skateSpots } from '../data/skateSpots';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
-const containerStyle = {
-  height: "100%",
-  border: "5px #6e769e solid"
-};
-
 const message = 'Hi there, thanks for inspecting my app. If you see "ERR_BLOCKED_BY_CLIENT" in your console, it is likely caused by your adblocker.';
 
 export function Map({ berlinCoordinates }) {
@@ -21,7 +16,7 @@ export function Map({ berlinCoordinates }) {
   return (
     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
       <GoogleMap
-        mapContainerStyle={containerStyle}
+        id='google-map'
         center={berlinCoordinates}
         zoom={12}
         options={{ styles: customMapStyle }}
