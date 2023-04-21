@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function WeatherDetails({ icon, value, largerValue, unit, label }) {
-  const valueClassName = `weather-details-value${largerValue ? ' larger' : null}`;
+  const valueClassName = `weather-details-value${largerValue ? ' larger' : ''}`;
 
   return (
     <div className='weather-details-container'>
