@@ -9,7 +9,6 @@ export function Spinner({ size }) {
       <FontAwesomeIcon
         icon={faSpinner}
         spin
-        // className='spinner-icon'
         style={{ fontSize: size }}
       />
     </div>
