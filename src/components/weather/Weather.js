@@ -68,7 +68,7 @@ export function Weather({ berlinCoordinates }) {
   useEffect(updateTimeNow, []);
   useEffect(fetchNewDataAtTopOfHour, [isTopOfHour, fetchWeather, fetchAirQuality]);
 
-  return !dataReady ? <Spinner size='120px' /> : (
+  const content = !dataReady ? <Spinner size='120px' /> : (
     <div id="weather-panel">
       <WeatherPanelTopRow
         iconCode={weatherIcon.code}
@@ -88,6 +88,12 @@ export function Weather({ berlinCoordinates }) {
         sunsetToday={timeRef.current?.today?.sunset}
         sunriseTomorrow={timeRef.current?.tomorrow?.sunrise}
       />
+    </div>
+  );
+
+  return (
+    <div id='weather-container'>
+      {content}
     </div>
   );
 }

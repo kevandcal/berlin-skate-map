@@ -11,7 +11,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  height: 380px;
+  height: 390px;
   width: var(--content-width);
   max-width: var(--max-content-width);
   margin: var(--margin-width) auto;
