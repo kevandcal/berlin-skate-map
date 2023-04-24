@@ -1,0 +1,27 @@
+#weather-panel-details-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 900px) and (min-width: 701px) {
+  #weather-panel-details-row {
+    column-gap: 5px;
+    border-left: 1px solid rgba(0, 0, 0, 0.6);
+    border-right: 1px solid rgba(0, 0, 0, 0.6);
+    border-top: none;
+    border-bottom: none;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 700px) and (min-width: 501px) {
+  #weather-panel-details-row {
+    order: 3;
+    grid-column: span 2;
+    column-gap: 0;
+    border-bottom: none;
+  }
+}

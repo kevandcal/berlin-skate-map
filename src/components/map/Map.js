@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, InfoWindow, LoadScript } from '@react-google-maps/api';
-import { customMapStyle } from "../data/customMapStyle";
-import { skateSpots } from '../data/skateSpots';
+import { customMapStyle } from "../../data/customMapStyle";
+import { skateSpots } from '../../data/skateSpots';
+import './Map.css';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const message = 'Hi there, thanks for inspecting my app. If you see "ERR_BLOCKED_BY_CLIENT" in your console, it is likely caused by your adblocker.';

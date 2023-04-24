@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Daylight } from "./Daylight";
-import { WeatherPanelDetailsRow } from "./WeatherPanelDetailsRow";
-import { Spinner } from './Spinner';
-import { roundToOneDecimal, handlePrecipitation } from "../helperFunctions";
+import { Daylight } from "../daylight/Daylight";
+import { WeatherPanelDetailsRow } from "../weather-panel-details-row/WeatherPanelDetailsRow";
+import { Spinner } from '../spinner/Spinner';
+import { WeatherPanelTopRow } from '../weather-panel-top-row/WeatherPanelTopRow';
+import { roundToOneDecimal, handlePrecipitation } from "../../helperFunctions";
+import './Weather.css';
 const OPEN_WEATHER_MAP_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_KEY;
 
 export function Weather({ berlinCoordinates }) {
@@ -90,20 +92,3 @@ export function Weather({ berlinCoordinates }) {
   );
 }
 
-function WeatherPanelTopRow({ iconCode, description, tempNow, tempMax, tempMin }) {
-  const src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`
-
-  return (
-    <div id="weather-panel-top-row">
-      <img src={src} alt={description} title={description} id="weather-icon" />
-      <div id='temperature-container'>
-        <p id="temperature-now">{tempNow}&deg;&thinsp;C</p>
-        <div id='temperature-range'>
-          <p>H: {tempMax}&deg;</p>
-          <div id='temperature-range-divider' />
-          <p>L: {tempMin}&deg;</p>
-        </div>
-      </div>
-    </div>
-  )
-}

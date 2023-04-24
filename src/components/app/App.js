@@ -1,6 +1,7 @@
 import React from "react";
-import { Map } from "./Map";
-import { Header } from "./Header";
+import { Map } from "../map/Map";
+import { Header } from "../header/Header";
+import './App.css';
 
 const berlinCoordinates = { lat: 52.520008, lng: 13.404954 };
 

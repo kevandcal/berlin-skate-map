@@ -1,6 +1,7 @@
 import React from "react";
 import { faUmbrella, faLungs, faWind } from '@fortawesome/free-solid-svg-icons';
-import { WeatherDetails } from "./WeatherDetails";
+import { WeatherDetails } from "../weather-details/WeatherDetails";
+import './WeatherPanelDetailsRow.css';
 
 const airQualityDict = {
   1: 'Good',

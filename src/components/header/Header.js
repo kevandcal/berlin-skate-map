@@ -1,5 +1,6 @@
 import React from "react";
-import { Weather } from "./Weather";
+import { Weather } from "../weather/Weather";
+import './Header.css';
 
 export function Header({ berlinCoordinates }) {
 

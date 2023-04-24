@@ -1,0 +1,104 @@
+header {
+  width: 100%;
+  height: 100%;
+  color: var(--custom-grey);
+  background-color: var(--main-green);
+  border-bottom: 5px var(--darker-green) solid;
+}
+
+#header-content {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 380px;
+  width: var(--content-width);
+  max-width: var(--max-content-width);
+  margin: var(--margin-width) auto;
+}
+
+#logo {
+  margin: -5px 0 0 -5px;
+  font-size: 170px;
+  line-height: 125px;
+  font-weight: 800;
+  background: url("../../img/east-side-gallery.jpg") no-repeat;
+  background-size: cover;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  z-index: 10;
+  user-select: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#skate-letters {
+  padding-left: 5px;
+}
+
+
+@media (max-width: 1200px) {
+  #header-content {
+    height: 330px;
+  }
+
+  #logo {
+    margin: 0 0 0 -5px;
+    font-size: 150px;
+    line-height: 110px;
+  }
+}
+
+@media (max-width: 1020px) {
+  #header-content {
+    height: 280px;
+  }
+
+  #logo {
+    font-size: 125px;
+    line-height: 93px;
+  }
+}
+
+@media (max-width: 900px) {
+  #header-content {
+    flex-direction: column;
+    gap: calc(var(--margin-width) * 2);
+    height: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  header {
+    border: none;
+  }
+
+  #header-content {
+    margin-bottom: calc(var(--margin-width) * 2);
+  }
+}
+
+@media (max-width: 500px) {
+  #logo {
+    font-size: 22vw;
+    line-height: 16.4vw;
+  }
+}
+
+
+@media (max-width: 350px) {
+  #logo {
+    font-size: 77px;
+    line-height: 58px;
+  }
+}
+
+@media (max-width: 300px) {
+  header {
+    overflow-x: hidden;
+  }
+}

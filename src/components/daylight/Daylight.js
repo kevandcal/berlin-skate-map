@@ -1,8 +1,9 @@
 import React from 'react';
 import { faHourglass } from '@fortawesome/free-solid-svg-icons';
-import { WeatherDetails } from './WeatherDetails';
-import { Spinner } from './Spinner';
-import { calculateCountdown } from '../helperFunctions';
+import { WeatherDetails } from '../weather-details/WeatherDetails';
+import { Spinner } from '../spinner/Spinner';
+import { calculateCountdown } from '../../helperFunctions';
+import './Daylight.css';
 
 export function Daylight({ timeNow, sunriseToday, sunsetToday, sunriseTomorrow }) {
   const sunIsUp = sunriseToday < timeNow && timeNow < sunsetToday;
