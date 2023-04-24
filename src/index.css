@@ -73,6 +73,7 @@ header {
   grid-template-rows: repeat(3, 1fr);
   height: 100%;
   width: 450px;
+  user-select: none;
 }
 
 #weather-panel-top-row {
@@ -215,25 +216,21 @@ header {
   color: var(--custom-grey);
   text-align: center;
   border-radius: 8px;
-  padding: 1.5vh 12px;
-  width: 30vw;
-  max-width: 450px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  row-gap: 1.5vh;
+  padding: 12px;
+  width: 450px;
+  max-width: 45vw;
 }
 
 #info-window-name {
   font-size: 28px;
   font-weight: 800;
   letter-spacing: 2px;
+  margin: 3px 0 15px;
 }
 
 #info-window-description {
   font-size: 18px;
-  margin-top: 1vh;
+  padding: 8px 0;
 }
 
 #info-window-img {
@@ -244,8 +241,8 @@ header {
 #info-window-address {
   font-size: 16px;
   background-color: var(--darker-green);
-  padding: 8px 12px;
-  margin: 1vh 0;
+  padding: 10px 15px;
+  margin: 12px 0;
   border-radius: 6px;
   color: var(--custom-grey);
   border: none;
@@ -253,11 +250,12 @@ header {
   transition: 0.2s;
 }
 
-#info-window-address:hover {
-  box-shadow: 0 0 5px white;
-  color: white;
+@media (hover: hover) {
+  #info-window-address:hover {
+    box-shadow: 0 0 5px white;
+    color: white;
+  }
 }
-
 
 @media (max-width: 1200px) {
   :root {
@@ -349,6 +347,18 @@ header {
   .weather-details-value.larger {
     font-size: 24px;
   }
+
+  #info-window-name {
+    font-size: 25px;
+  }
+
+  #info-window-description {
+    font-size: 16px;
+  }
+
+  #info-window-address {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 900px) and (min-width: 701px) {
@@ -410,6 +420,23 @@ header {
 
   #header-content {
     margin-bottom: calc(var(--margin-width) * 2);
+  }
+
+  #info-window-name {
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    margin: 0 0 12px;
+  }
+
+  #info-window-description {
+    font-size: 14px;
+    padding: 6px 0;
+  }
+
+  #info-window-address {
+    font-size: 13px;
+    padding: 6px 10px;
+    margin: 8px 0 4px;
   }
 }
 
