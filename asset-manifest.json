@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/berlin-skate-map/static/css/main.35a2e461.css",
-    "main.js": "/berlin-skate-map/static/js/main.41c3043f.js",
+    "main.js": "/berlin-skate-map/static/js/main.0e43471a.js",
     "static/media/luan-oliveira-berlin-baenke.gif": "/berlin-skate-map/static/media/luan-oliveira-berlin-baenke.3ebcaa7b6d3cac30d661.gif",
     "static/media/albert-nyberg-kulturforum.gif": "/berlin-skate-map/static/media/albert-nyberg-kulturforum.a3c55c38d744429ca5f5.gif",
     "static/media/dog-shit-spot.jpg": "/berlin-skate-map/static/media/dog-shit-spot.70f3553dd517f2310169.jpg",
@@ -11,10 +11,10 @@
     "static/media/heidelberger-platz.jpg": "/berlin-skate-map/static/media/heidelberger-platz.3ca6cbcdcf9754faae4c.jpg",
     "index.html": "/berlin-skate-map/index.html",
     "main.35a2e461.css.map": "/berlin-skate-map/static/css/main.35a2e461.css.map",
-    "main.41c3043f.js.map": "/berlin-skate-map/static/js/main.41c3043f.js.map"
+    "main.0e43471a.js.map": "/berlin-skate-map/static/js/main.0e43471a.js.map"
   },
   "entrypoints": [
     "static/css/main.35a2e461.css",
-    "static/js/main.41c3043f.js"
+    "static/js/main.0e43471a.js"
   ]
 }
