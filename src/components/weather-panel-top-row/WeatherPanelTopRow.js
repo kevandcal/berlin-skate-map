@@ -2,7 +2,7 @@ import React from 'react';
 import './WeatherPanelTopRow.css';
 
 export function WeatherPanelTopRow({ iconCode, description, tempNow, tempMax, tempMin }) {
-  const src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+  const src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`
 
   return (
     <div id="weather-panel-top-row">
