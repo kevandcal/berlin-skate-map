@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/berlin-skate-map/static/css/main.ca7a2564.css",
-    "main.js": "/berlin-skate-map/static/js/main.0fe7b094.js",
+    "main.css": "/berlin-skate-map/static/css/main.feea51db.css",
+    "main.js": "/berlin-skate-map/static/js/main.2dfbf6fa.js",
     "static/media/luan-oliveira-berlin-baenke.gif": "/berlin-skate-map/static/media/luan-oliveira-berlin-baenke.3ebcaa7b6d3cac30d661.gif",
     "static/media/albert-nyberg-kulturforum.gif": "/berlin-skate-map/static/media/albert-nyberg-kulturforum.a3c55c38d744429ca5f5.gif",
     "static/media/dog-shit-spot.jpg": "/berlin-skate-map/static/media/dog-shit-spot.70f3553dd517f2310169.jpg",
     "static/media/kleistpark-tobi.jpg": "/berlin-skate-map/static/media/kleistpark-tobi.6b1cd87b1590fa80bd04.jpg",
-    "static/media/berlin-skatehalle.jpeg": "/berlin-skate-map/static/media/berlin-skatehalle.e0e0c530867c12143a8a.jpeg",
-    "static/media/east-side-gallery.jpeg": "/berlin-skate-map/static/media/east-side-gallery.c3b33703f5e2c4794e1c.jpeg",
-    "static/media/heidelberger-platz.jpeg": "/berlin-skate-map/static/media/heidelberger-platz.3ca6cbcdcf9754faae4c.jpeg",
+    "static/media/berlin-skatehalle.jpg": "/berlin-skate-map/static/media/berlin-skatehalle.e0e0c530867c12143a8a.jpg",
+    "static/media/east-side-gallery.jpg": "/berlin-skate-map/static/media/east-side-gallery.c3b33703f5e2c4794e1c.jpg",
+    "static/media/heidelberger-platz.jpg": "/berlin-skate-map/static/media/heidelberger-platz.3ca6cbcdcf9754faae4c.jpg",
     "index.html": "/berlin-skate-map/index.html",
-    "main.ca7a2564.css.map": "/berlin-skate-map/static/css/main.ca7a2564.css.map",
-    "main.0fe7b094.js.map": "/berlin-skate-map/static/js/main.0fe7b094.js.map"
+    "main.feea51db.css.map": "/berlin-skate-map/static/css/main.feea51db.css.map",
+    "main.2dfbf6fa.js.map": "/berlin-skate-map/static/js/main.2dfbf6fa.js.map"
   },
   "entrypoints": [
-    "static/css/main.ca7a2564.css",
-    "static/js/main.0fe7b094.js"
+    "static/css/main.feea51db.css",
+    "static/js/main.2dfbf6fa.js"
   ]
 }
