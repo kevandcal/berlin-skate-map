@@ -2,7 +2,7 @@
   height: calc(100vh - calc(var(--margin-width) * 2));
   width: var(--content-width);
   max-width: var(--max-content-width);
-  margin: var(--margin-width);
+  margin: var(--margin-width) auto;
   border: 5px #6e769e solid;
   box-sizing: border-box;
 }

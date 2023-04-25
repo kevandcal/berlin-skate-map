@@ -20,10 +20,10 @@ export function Weather({ berlinCoordinates }) {
   const dataReady = weatherIcon && temperature && typeof chanceOfPrecip === 'number' && typeof windSpeed === 'number' && airQuality;
 
   const { lat, lng: lon } = berlinCoordinates;
-  const apiUrl = 'api.openweathermap.org/data/';
+  const apiUrl = 'https://api.openweathermap.org/data/';
   const apiQueryString = `?lat=${lat}&lon=${lon}&appid=${OPEN_WEATHER_MAP_KEY}&units=metric`;
-  const apiEndpointAirQuality = `http://${apiUrl}2.5/air_pollution${apiQueryString}`;
-  const apiEndpointWeather = `https://${apiUrl}3.0/onecall${apiQueryString}&exclude=alerts,minutely`;
+  const apiEndpointAirQuality = `${apiUrl}2.5/air_pollution${apiQueryString}`;
+  const apiEndpointWeather = `${apiUrl}3.0/onecall${apiQueryString}&exclude=alerts,minutely`;
 
   const fetchWeather = useCallback(() => {
     fetch(apiEndpointWeather)
