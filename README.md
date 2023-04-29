@@ -4,7 +4,7 @@ This React project features skateboarding spots in Berlin plotted on a custom-st
 
 ## Demo
 
-[<img src="src/img/berlinskatemap-demo.gif" width="600px" height="auto" />](https://kevandcal.github.io/berlin-skate-map/)
+[<img src="src/img/berlinskatemap-demo-still-950px-tinyjpg.jpg" width="800px" height="auto" />](https://kevandcal.github.io/berlin-skate-map/)
 
 Click image to try for yourself
 
